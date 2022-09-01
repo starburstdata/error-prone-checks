@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.airlift</groupId>
+        <artifactId>airbase</artifactId>
+        <version>128</version>
+    </parent>
+
+    <groupId>com.starburstdata.errorprone</groupId>
+    <artifactId>error-prone-check-root</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>starburst-error-prone-check-root</name>
+    <description>Additional Error Prone bug checkers</description>
+
+    <developers>
+        <developer>
+            <name>Starburstdata</name>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/starburstdata/error-prone-checks.git</connection>
+        <url>https://github.com/starburstdata/error-prone-checks</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <air.license.header-file>${air.main.basedir}/.mvn/license/starburst-header.txt</air.license.header-file>
+        <air.check.skip-pmd>true</air.check.skip-pmd>
+
+        <project.build.targetJdk>17</project.build.targetJdk>
+
+        <air.release.preparation-goals>clean verify -DskipTests</air.release.preparation-goals>
+
+        <!-- Publish artifacts to our internal Maven repository -->
+        <air.repository.snapshot.id>starburstdata.snapshots</air.repository.snapshot.id>
+        <air.repository.snapshot.name>Starburstdata Snapshots</air.repository.snapshot.name>
+        <air.repository.snapshot.url>https://starburstdata-sep-cicd-843985043183.d.codeartifact.us-east-2.amazonaws.com/maven/snapshots/</air.repository.snapshot.url>
+        <air.repository.release.id>starburstdata.releases</air.repository.release.id>
+        <air.repository.release.name>Starburstdata Releases</air.repository.release.name>
+        <air.repository.release.url>https://starburstdata-sep-cicd-843985043183.d.codeartifact.us-east-2.amazonaws.com/maven/releases/</air.repository.release.url>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration combine.self="override">
+                        <source>${project.build.targetJdk}</source>
+                        <target>${project.build.targetJdk}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <maxmem>${air.build.jvmsize}</maxmem>
+                        <failOnWarning>${air.compiler.fail-warnings}</failOnWarning>
+                        <showWarnings>true</showWarnings>
+                        <parameters>true</parameters>
+                        <compilerArgs>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        </compilerArgs>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>com.google.errorprone</groupId>
+                                <artifactId>error_prone_core</artifactId>
+                                <version>${dep.error-prone.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <argLine>
+                            --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+                            --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+                            --add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED
+                            --add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED
+                            --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
+                            --add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED
+                            --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+                            --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+                            --add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
+                            --add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED
+                        </argLine>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <repositories>
+        <!-- Allow the consumption of artifacts from our internal snapshot and release repositories -->
+        <repository>
+            <id>${air.repository.snapshot.id}</id>
+            <url>${air.repository.snapshot.url}</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>${air.repository.release.id}</id>
+            <url>${air.repository.release.url}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>${air.repository.snapshot.id}</id>
+            <url>${air.repository.snapshot.url}</url>
+        </snapshotRepository>
+        <repository>
+            <id>${air.repository.release.id}</id>
+            <url>${air.repository.release.url}</url>
+        </repository>
+    </distributionManagement>
+</project>

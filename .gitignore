@@ -1,0 +1,16 @@
+*.iml
+*.ipr
+*.iws
+.idea
+.vscode
+target/
+var/
+*.class
+.checkstyle
+.pmd
+.pmdruleset.xml
+.DS_Store
+.classpath
+.settings
+.project
+.factorypath

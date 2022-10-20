@@ -8,16 +8,16 @@
  * Redistribution of this material is strictly prohibited.
  */
 
-package io.trino.spi.trinoexperimentalspi;
+package io.trino.spi.experimental;
 
 import io.trino.spi.Experimental;
 
-public class ClassWithAnnotatedMember
+public class ClassWithExperimentalMember
 {
     @Experimental
-    public void annotated()
+    public void experimental()
     {}
 
-    public void notAnnotated()
+    public void notExperimental()
     {}
 }

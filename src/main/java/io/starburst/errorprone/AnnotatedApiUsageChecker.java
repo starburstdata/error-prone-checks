@@ -8,7 +8,7 @@
  * Redistribution of this material is strictly prohibited.
  */
 
-package com.starburstdata.errorprone.check.trinoexperimentalspi;
+package io.starburst.errorprone;
 
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
@@ -49,9 +49,9 @@ import static javax.lang.model.element.ElementKind.METHOD;
  * <p>Adapted from <a href="https://github.com/google/guava-beta-checker/blob/9b26aa980be7f70631921fd6695013547728eb1e/src/main/java/com/google/common/annotations/checkers/AnnotatedApiUsageChecker.java"
  * >AnnotatedApiUsageChecker</a></p>
  */
-public class AnnotatedApiUsageChecker
+public abstract class AnnotatedApiUsageChecker
         extends BugChecker
-        implements MemberSelectTreeMatcher, IdentifierTreeMatcher, MemberReferenceTreeMatcher
+        implements IdentifierTreeMatcher, MemberReferenceTreeMatcher, MemberSelectTreeMatcher
 {
     /**
      * Kinds of elements that should be considered annotated if the element's owner (i.e. the class
@@ -64,7 +64,7 @@ public class AnnotatedApiUsageChecker
     private final String basePackage;
     private final String basePackagePrefix;
 
-    protected final String annotationType;
+    private final String annotationType;
 
     protected AnnotatedApiUsageChecker(String basePackage, String annotationType)
     {

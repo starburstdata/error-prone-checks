@@ -8,22 +8,22 @@
  * Redistribution of this material is strictly prohibited.
  */
 
-package com.starburstdata.errorprone.check.trinoexperimentalspi;
+package io.starburst.errorprone;
 
 import com.google.errorprone.BugPattern;
 
 @BugPattern(
-        name = "UsingTrinoExperimentalSpi",
-        summary = "Do not use Trino experimental SPI.",
+        name = "TrinoExperimentalSpi",
+        summary = "Do not use Trino @Experimental SPIs.",
         explanation = """
-                Using Trino SPIs marked as experimental should be avoided \
+                Trino SPIs marked as @Experimental should be avoided \
                 in libraries and shared components that other projects depend on.""",
         linkType = BugPattern.LinkType.NONE,
         severity = BugPattern.SeverityLevel.WARNING)
-public final class UsingTrinoExperimentalSpiChecker
+public final class TrinoExperimentalSpiChecker
         extends AnnotatedApiUsageChecker
 {
-    public UsingTrinoExperimentalSpiChecker()
+    public TrinoExperimentalSpiChecker()
     {
         super("io.trino.spi", "io.trino.spi.Experimental");
     }

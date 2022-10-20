@@ -8,9 +8,12 @@
  * Redistribution of this material is strictly prohibited.
  */
 
-package io.trino.spi.trinoexperimentalspi;
+package io.trino.spi.experimental;
 
-public class NotAnnotatedClass
+import io.trino.spi.Experimental;
+
+@Experimental
+public class ExperimentalClass
 {
     public void foo()
     {}

@@ -12,7 +12,10 @@ package io.starburst.errorprone;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
+import com.google.errorprone.ErrorProneFlags;
 import com.google.errorprone.bugpatterns.BugChecker;
+
+import java.util.Collections;
 
 @AutoService(BugChecker.class)
 @BugPattern(
@@ -26,8 +29,18 @@ import com.google.errorprone.bugpatterns.BugChecker;
 public final class TrinoExperimentalSpiChecker
         extends AnnotatedApiUsageChecker
 {
-    public TrinoExperimentalSpiChecker()
+    public TrinoExperimentalSpiChecker(ErrorProneFlags flags)
     {
-        super("io.trino.spi", "io.trino.spi.Experimental");
+        super(
+                "io.trino.spi.Experimental",
+                flags.getSet("TrinoExperimentalSpi:BasePackages").orElse(Collections.emptySet()),
+                flags.getSet("TrinoExperimentalSpi:IgnoredPackages").orElse(Collections.emptySet()),
+                flags.getSet("TrinoExperimentalSpi:IgnoredTypes").orElse(Collections.emptySet()));
+    }
+
+    @Override
+    protected String messageForMatchingBasePackage(String packageName)
+    {
+        return "Do not use Trino @Experimental SPIs from '%s'.".formatted(packageName);
     }
 }

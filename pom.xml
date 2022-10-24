@@ -33,6 +33,7 @@
 
         <project.build.targetJdk>17</project.build.targetJdk>
 
+        <dep.auto-service.version>1.0.1</dep.auto-service.version>
         <dep.error-prone.version>2.16</dep.error-prone.version>
         <dep.compile-testing.version>0.19</dep.compile-testing.version>
 
@@ -48,6 +49,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service-annotations</artifactId>
+            <version>${dep.auto-service.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_check_api</artifactId>
@@ -139,6 +145,21 @@
     </dependencies>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <dependency>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>${dep.auto-service.version}</version>
+                        </dependency>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
         <testResources>
             <testResource>
                 <directory>src/test/java</directory>

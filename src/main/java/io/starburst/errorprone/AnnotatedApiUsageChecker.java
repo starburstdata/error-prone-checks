@@ -28,6 +28,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.errorprone.matchers.Description.NO_MATCH;
@@ -61,17 +62,21 @@ public abstract class AnnotatedApiUsageChecker
     private static final Set<ElementKind> INHERITS_ANNOTATION_FROM_OWNER = Set.of(
             FIELD, METHOD, CONSTRUCTOR, ENUM_CONSTANT, CLASS, INTERFACE, ENUM, ANNOTATION_TYPE);
 
-    private final String basePackage;
-    private final String basePackagePrefix;
-
     private final String annotationType;
 
-    protected AnnotatedApiUsageChecker(String basePackage, String annotationType)
+    private final Set<String> basePackages;
+    private final Set<String> ignoredPackages;
+    private final Set<String> ignoredTypes;
+
+    protected AnnotatedApiUsageChecker(String annotationType, Set<String> basePackages, Set<String> ignoredPackages, Set<String> ignoredTypes)
     {
-        this.basePackage = basePackage;
-        this.basePackagePrefix = basePackage + ".";
         this.annotationType = annotationType;
+        this.basePackages = Set.copyOf(basePackages);
+        this.ignoredPackages = Set.copyOf(ignoredPackages);
+        this.ignoredTypes = Set.copyOf(ignoredTypes);
     }
+
+    protected abstract String messageForMatchingBasePackage(String packageName);
 
     @Override
     public final Description matchMemberSelect(MemberSelectTree tree, VisitorState state)
@@ -97,8 +102,17 @@ public abstract class AnnotatedApiUsageChecker
     private Description matchTree(Tree tree)
     {
         Symbol symbol = ASTHelpers.getSymbol(tree);
-        if (symbol != null && isInMatchingPackage(symbol) && isAnnotatedApi(symbol)) {
-            return describeMatch(tree);
+        if (symbol != null && isAnnotatedApi(symbol)) {
+            if (ignoredPackages.contains(symbol.packge().getQualifiedName().toString())) {
+                return NO_MATCH;
+            }
+            if (basePackages.isEmpty()) {
+                return describeMatch(tree);
+            }
+            Optional<String> packageName = findMatchingBasePackage(symbol);
+            if (packageName.isPresent()) {
+                return buildDescription(tree).setMessage(messageForMatchingBasePackage(packageName.get())).build();
+            }
         }
         return NO_MATCH;
     }
@@ -108,27 +122,18 @@ public abstract class AnnotatedApiUsageChecker
         return tree.getName().contentEquals("super");
     }
 
-    private boolean isInMatchingPackage(Symbol symbol)
+    private Optional<String> findMatchingBasePackage(Symbol symbol)
     {
-        String packageName = symbol.packge().fullname.toString();
-        return !isIgnoredPackage(packageName) &&
-                (packageName.equals(basePackage) || packageName.startsWith(basePackagePrefix));
-    }
-
-    /**
-     * May be overridden to ignore APIs under specific packages. Returns false by default.
-     */
-    protected boolean isIgnoredPackage(String packageName)
-    {
-        return false;
-    }
-
-    /**
-     * May be overridden to ignore specific types and their members. Returns false by default.
-     */
-    protected boolean isIgnoredType(String fullyQualifiedTypeName)
-    {
-        return false;
+        String packageName = symbol.packge().getQualifiedName().toString();
+        if (basePackages.contains(packageName)) {
+            return Optional.of(packageName);
+        }
+        for (String basePackage : basePackages) {
+            if (packageName.startsWith(basePackage + ".")) {
+                return Optional.of(basePackage);
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -138,7 +143,7 @@ public abstract class AnnotatedApiUsageChecker
     private boolean isAnnotatedApi(Symbol symbol)
     {
         Name name = symbol.getQualifiedName();
-        if (name != null && isIgnoredType(name.toString())) {
+        if (name != null && ignoredTypes.contains(name.toString())) {
             return false;
         }
 

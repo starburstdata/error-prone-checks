@@ -8,6 +8,17 @@ extensions.
 
 * `TrinoExperimentalSpi` - Check for usages of Trino `@Experimental` SPIs.
 
+The checker can be fine-tuned with the following flags:
+
+* `-XepOpt:<CheckerName>:BasePackages=io.trino.spi,...` - check for usage of APIs from these base
+* packages only.
+* `-XepOpt:<CheckerName>:IgnoredPackages=io.trino.spi,...` - ignore usage of APIs from these
+* packages
+* `-XepOpt:<CheckerName>:IgnoredTypes=io.trino.spi.MyClass,...` - ignore usage of APIs from these
+* classes
+
+Individual warnings can be suppressed with the `@SuppressWarnings("<CheckerName>")` annotation.
+
 ## Usage
 
 To use the checkers configure your project to build with the Error Prone Java compiler and add

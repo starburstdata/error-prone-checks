@@ -39,13 +39,12 @@
 
         <air.release.preparation-goals>clean verify -DskipTests</air.release.preparation-goals>
 
-        <!-- Publish artifacts to our internal Maven repository -->
-        <air.repository.snapshot.id>starburstdata.snapshots</air.repository.snapshot.id>
-        <air.repository.snapshot.name>Starburstdata Snapshots</air.repository.snapshot.name>
-        <air.repository.snapshot.url>https://starburstdata-sep-cicd-843985043183.d.codeartifact.us-east-2.amazonaws.com/maven/snapshots/</air.repository.snapshot.url>
-        <air.repository.release.id>starburstdata.releases</air.repository.release.id>
-        <air.repository.release.name>Starburstdata Releases</air.repository.release.name>
-        <air.repository.release.url>https://starburstdata-sep-cicd-843985043183.d.codeartifact.us-east-2.amazonaws.com/maven/releases/</air.repository.release.url>
+        <air.repository.snapshot.id>ossrh</air.repository.snapshot.id>
+        <air.repository.snapshot.name>Sonatype Snapshots</air.repository.snapshot.name>
+        <air.repository.snapshot.url>https://oss.sonatype.org/content/repositories/snapshots</air.repository.snapshot.url>
+        <air.repository.release.id>ossrh</air.repository.release.id>
+        <air.repository.release.name>Sonatype Releases</air.repository.release.name>
+        <air.repository.release.url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</air.repository.release.url>
     </properties>
 
     <dependencies>

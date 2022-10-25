@@ -6,9 +6,10 @@ extensions.
 
 ## Bug Checkers
 
+* `DeprecatedApi` - Check for usages of `@Deprecated` APIs.
 * `TrinoExperimentalSpi` - Check for usages of Trino `@Experimental` SPIs.
 
-The checker can be fine-tuned with the following flags:
+Both checkers can be fine-tuned with the following flags:
 
 * `-XepOpt:<CheckerName>:BasePackages=io.trino.spi,...` - check for usage of APIs from these base
 * packages only.
@@ -17,7 +18,9 @@ The checker can be fine-tuned with the following flags:
 * `-XepOpt:<CheckerName>:IgnoredTypes=io.trino.spi.MyClass,...` - ignore usage of APIs from these
 * classes
 
-Individual warnings can be suppressed with the `@SuppressWarnings("<CheckerName>")` annotation.
+Individual warnings can be suppressed with the `@SuppressWarnings("<CheckerName>")` annotation. For
+the `DeprecatedApi` checker, `@SuppressWarnings({"deprecation", "DeprecatedApi"})` suppresses both
+compiler and error-prone checker warnings.
 
 ## Usage
 

@@ -29,6 +29,11 @@ import java.util.Collections;
 public final class DeprecatedApiChecker
         extends AnnotatedApiUsageChecker
 {
+    public DeprecatedApiChecker()
+    {
+        this(ErrorProneFlags.empty());
+    }
+
     public DeprecatedApiChecker(ErrorProneFlags flags)
     {
         super(

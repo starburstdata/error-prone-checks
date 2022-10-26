@@ -29,6 +29,11 @@ import java.util.Collections;
 public final class TrinoExperimentalSpiChecker
         extends AnnotatedApiUsageChecker
 {
+    public TrinoExperimentalSpiChecker()
+    {
+        this(ErrorProneFlags.empty());
+    }
+
     public TrinoExperimentalSpiChecker(ErrorProneFlags flags)
     {
         super(

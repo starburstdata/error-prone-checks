@@ -227,7 +227,14 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.4.1</version>
                     <configuration>
+                        <show>public</show>
+                        <failOnError>false</failOnError>
+                        <detectOfflineLinks>false</detectOfflineLinks>
+                        <doclint>all,-missing</doclint>
+                        <nohelp>true</nohelp>
+                        <quiet>true</quiet>
                         <additionalJOptions>
                             <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</additionalJOption>
                             <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</additionalJOption>

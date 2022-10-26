@@ -10,7 +10,7 @@
 
     <groupId>io.starburst.errorprone</groupId>
     <artifactId>error-prone-checks</artifactId>
-    <version>2-SNAPSHOT</version>
+    <version>2</version>
 
     <name>error-prone-checks</name>
     <description>Additional Error Prone bug checkers</description>

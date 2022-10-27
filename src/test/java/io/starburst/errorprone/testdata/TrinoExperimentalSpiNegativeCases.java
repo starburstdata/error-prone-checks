@@ -47,4 +47,12 @@ public class TrinoExperimentalSpiNegativeCases
     public static class AsBaseClass
             extends NotExperimentalClass
     {}
+
+    public static class Overrides
+            extends ClassWithExperimentalMember
+    {
+        @Override
+        public void notExperimental()
+        {}
+    }
 }

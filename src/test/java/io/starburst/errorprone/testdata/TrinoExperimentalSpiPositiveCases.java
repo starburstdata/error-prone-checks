@@ -55,4 +55,13 @@ public class TrinoExperimentalSpiPositiveCases
             // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
             extends ExperimentalClass
     {}
+
+    public static class Overrides
+            extends ClassWithExperimentalMember
+    {
+        @Override
+        // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
+        public void experimental()
+        {}
+    }
 }

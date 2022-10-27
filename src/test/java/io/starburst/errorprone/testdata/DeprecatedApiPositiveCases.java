@@ -55,4 +55,13 @@ public class DeprecatedApiPositiveCases
             // BUG: Diagnostic contains: Do not use @Deprecated APIs.
             extends DeprecatedClass
     {}
+
+    public static class Overrides
+            extends ClassWithDeprecatedMember
+    {
+        @Override
+        // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+        public void deprecated()
+        {}
+    }
 }

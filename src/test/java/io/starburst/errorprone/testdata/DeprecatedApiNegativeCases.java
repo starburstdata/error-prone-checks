@@ -47,4 +47,12 @@ public class DeprecatedApiNegativeCases
     public static class AsBaseClass
             extends NotDeprecatedClass
     {}
+
+    public static class Overrides
+            extends ClassWithDeprecatedMember
+    {
+        @Override
+        public void notDeprecated()
+        {}
+    }
 }

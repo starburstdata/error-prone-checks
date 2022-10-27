@@ -15,12 +15,14 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.IdentifierTreeMatcher;
 import com.google.errorprone.bugpatterns.BugChecker.MemberReferenceTreeMatcher;
 import com.google.errorprone.bugpatterns.BugChecker.MemberSelectTreeMatcher;
+import com.google.errorprone.bugpatterns.BugChecker.MethodTreeMatcher;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.util.ASTHelpers;
 import com.sun.source.tree.IdentifierTree;
 import com.sun.source.tree.ImportTree;
 import com.sun.source.tree.MemberReferenceTree;
 import com.sun.source.tree.MemberSelectTree;
+import com.sun.source.tree.MethodTree;
 import com.sun.source.tree.Tree;
 import com.sun.tools.javac.code.Symbol;
 
@@ -52,7 +54,7 @@ import static javax.lang.model.element.ElementKind.METHOD;
  */
 public abstract class AnnotatedApiUsageChecker
         extends BugChecker
-        implements IdentifierTreeMatcher, MemberReferenceTreeMatcher, MemberSelectTreeMatcher
+        implements IdentifierTreeMatcher, MemberReferenceTreeMatcher, MemberSelectTreeMatcher, MethodTreeMatcher
 {
     /**
      * Kinds of elements that should be considered annotated if the element's owner (i.e. the class
@@ -99,9 +101,28 @@ public abstract class AnnotatedApiUsageChecker
         return matchTree(tree);
     }
 
+    @Override
+    public Description matchMethod(MethodTree methodTree, VisitorState visitorState)
+    {
+        Symbol.MethodSymbol methodSym = ASTHelpers.getSymbol(methodTree);
+        if (methodSym == null) {
+            return NO_MATCH;
+        }
+        for (Symbol.MethodSymbol method : ASTHelpers.findSuperMethods(methodSym, visitorState.getTypes())) {
+            if (ASTHelpers.hasAnnotation(method, annotationType, visitorState)) {
+                return matchSymbol(methodTree, method.baseSymbol());
+            }
+        }
+        return NO_MATCH;
+    }
+
     private Description matchTree(Tree tree)
     {
-        Symbol symbol = ASTHelpers.getSymbol(tree);
+        return matchSymbol(tree, ASTHelpers.getSymbol(tree));
+    }
+
+    private Description matchSymbol(Tree tree, Symbol symbol)
+    {
         if (symbol != null && isAnnotatedApi(symbol)) {
             if (ignoredPackages.contains(symbol.packge().getQualifiedName().toString())) {
                 return NO_MATCH;

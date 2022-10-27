@@ -55,4 +55,13 @@ public class DeprecatedApiNegativeCasesSuppressed
     public static class AsBaseClass
             extends DeprecatedClass
     {}
+
+    public static class Overrides
+            extends ClassWithDeprecatedMember
+    {
+        @SuppressWarnings({"deprecation", "DeprecatedApi"})
+        @Override
+        public void deprecated()
+        {}
+    }
 }

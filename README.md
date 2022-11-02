@@ -20,7 +20,8 @@ Both checkers can be fine-tuned with the following flags:
 
 Individual warnings can be suppressed with the `@SuppressWarnings("<CheckerName>")` annotation. For
 the `DeprecatedApi` checker, `@SuppressWarnings({"deprecation", "DeprecatedApi"})` suppresses both
-compiler and error-prone checker warnings.
+compiler and error-prone checker warnings. This is necessary as `DeprecatedApi` can be more
+restrictive than the compiler deprecation check.
 
 ## Usage
 

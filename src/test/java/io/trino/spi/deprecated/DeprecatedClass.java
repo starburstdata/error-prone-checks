@@ -14,6 +14,8 @@ package io.trino.spi.deprecated;
 @Deprecated
 public class DeprecatedClass
 {
+    public static final String STATIC_MEMBER = "dummy";
+
     public void foo()
     {}
 }

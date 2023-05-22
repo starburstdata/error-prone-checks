@@ -16,6 +16,8 @@ import io.trino.spi.Experimental;
 @Experimental
 public class ExperimentalClass
 {
+    public static final String STATIC_MEMBER = "dummy";
+
     public void foo()
     {}
 }

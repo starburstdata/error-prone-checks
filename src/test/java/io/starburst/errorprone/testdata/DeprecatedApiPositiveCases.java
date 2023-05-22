@@ -15,6 +15,8 @@ import io.trino.spi.deprecated.DeprecatedClass;
 
 import java.util.List;
 
+import static io.trino.spi.deprecated.DeprecatedClass.STATIC_MEMBER;
+
 @SuppressWarnings({"deprecation", "unused"})
 public class DeprecatedApiPositiveCases
 {
@@ -50,6 +52,18 @@ public class DeprecatedApiPositiveCases
     public DeprecatedClass asReturnType()
     {
         return null;
+    }
+
+    public void referencingStaticMember()
+    {
+        // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+        String ignore = DeprecatedClass.STATIC_MEMBER;
+    }
+
+    public void referencingStaticMemberAsStaticImport()
+    {
+        // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+        String ignore = STATIC_MEMBER;
     }
 
     public static class AsBaseClass

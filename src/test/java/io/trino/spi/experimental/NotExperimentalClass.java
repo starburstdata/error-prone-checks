@@ -13,6 +13,8 @@ package io.trino.spi.experimental;
 @SuppressWarnings("unused")
 public class NotExperimentalClass
 {
+    public static final String STATIC_MEMBER = "dummy";
+
     public void foo()
     {}
 }

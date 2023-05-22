@@ -13,6 +13,8 @@ package io.trino.spi.deprecated;
 @SuppressWarnings("unused")
 public class NotDeprecatedClass
 {
+    public static final String STATIC_MEMBER = "dummy";
+
     public void foo()
     {}
 }

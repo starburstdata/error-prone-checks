@@ -15,6 +15,8 @@ import io.trino.spi.deprecated.NotDeprecatedClass;
 
 import java.util.List;
 
+import static io.trino.spi.deprecated.NotDeprecatedClass.STATIC_MEMBER;
+
 @SuppressWarnings("unused")
 public class DeprecatedApiNegativeCases
 {
@@ -43,6 +45,16 @@ public class DeprecatedApiNegativeCases
     public NotDeprecatedClass asReturnType()
     {
         return null;
+    }
+
+    public void referencingStaticMember()
+    {
+        String ignore = NotDeprecatedClass.STATIC_MEMBER;
+    }
+
+    public void referencingStaticMemberAsStaticImport()
+    {
+        String ignore = STATIC_MEMBER;
     }
 
     public static class AsBaseClass

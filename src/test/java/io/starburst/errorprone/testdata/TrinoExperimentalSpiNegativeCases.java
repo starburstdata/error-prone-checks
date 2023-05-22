@@ -15,6 +15,8 @@ import io.trino.spi.experimental.NotExperimentalClass;
 
 import java.util.List;
 
+import static io.trino.spi.experimental.NotExperimentalClass.STATIC_MEMBER;
+
 @SuppressWarnings("unused")
 public class TrinoExperimentalSpiNegativeCases
 {
@@ -43,6 +45,16 @@ public class TrinoExperimentalSpiNegativeCases
     public NotExperimentalClass asReturnType()
     {
         return null;
+    }
+
+    public void referencingStaticMember()
+    {
+        String ignore = NotExperimentalClass.STATIC_MEMBER;
+    }
+
+    public void referencingStaticMemberAsStaticImport()
+    {
+        String ignore = STATIC_MEMBER;
     }
 
     public static class AsBaseClass

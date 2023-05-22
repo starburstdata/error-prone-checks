@@ -28,6 +28,12 @@ public class TestTrinoExperimentalSpiChecker
     }
 
     @Test
+    public void testNegativeCasesSuppressed()
+    {
+        compilationTestHelper().addSourceFile("TrinoExperimentalSpiNegativeCasesSuppressed.java").doTest();
+    }
+
+    @Test
     public void testPositiveCases()
     {
         compilationTestHelper().addSourceFile("TrinoExperimentalSpiPositiveCases.java").doTest();

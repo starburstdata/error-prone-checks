@@ -12,6 +12,7 @@ package io.trino.spi.ignored;
 
 import io.trino.spi.Experimental;
 
+@SuppressWarnings("unused")
 @Experimental
 public class IgnoredExperimentalClass
 {

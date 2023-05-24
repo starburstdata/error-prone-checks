@@ -15,6 +15,7 @@ import io.trino.spi.experimental.ExperimentalClass;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class TrinoExperimentalSpiPositiveCases
 {
     // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.

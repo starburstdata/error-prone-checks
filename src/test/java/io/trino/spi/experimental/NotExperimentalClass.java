@@ -10,6 +10,7 @@
 
 package io.trino.spi.experimental;
 
+@SuppressWarnings("unused")
 public class NotExperimentalClass
 {
     public void foo()

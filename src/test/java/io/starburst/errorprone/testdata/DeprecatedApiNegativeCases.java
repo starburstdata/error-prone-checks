@@ -15,6 +15,7 @@ import io.trino.spi.deprecated.NotDeprecatedClass;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class DeprecatedApiNegativeCases
 {
     private final Object instantiation = new NotDeprecatedClass();
@@ -51,6 +52,7 @@ public class DeprecatedApiNegativeCases
     public static class Overrides
             extends ClassWithDeprecatedMember
     {
+        @SuppressWarnings("RedundantMethodOverride")
         @Override
         public void notDeprecated()
         {}

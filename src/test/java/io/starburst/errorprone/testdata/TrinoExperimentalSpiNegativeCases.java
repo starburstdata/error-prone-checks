@@ -15,6 +15,7 @@ import io.trino.spi.experimental.NotExperimentalClass;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class TrinoExperimentalSpiNegativeCases
 {
     private final Object instantiation = new NotExperimentalClass();
@@ -51,6 +52,7 @@ public class TrinoExperimentalSpiNegativeCases
     public static class Overrides
             extends ClassWithExperimentalMember
     {
+        @SuppressWarnings("RedundantMethodOverride")
         @Override
         public void notExperimental()
         {}

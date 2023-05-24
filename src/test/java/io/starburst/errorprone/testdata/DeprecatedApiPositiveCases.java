@@ -15,6 +15,7 @@ import io.trino.spi.deprecated.DeprecatedClass;
 
 import java.util.List;
 
+@SuppressWarnings({"deprecation", "unused"})
 public class DeprecatedApiPositiveCases
 {
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.

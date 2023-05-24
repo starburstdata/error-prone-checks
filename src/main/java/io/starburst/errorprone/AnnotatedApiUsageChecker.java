@@ -123,17 +123,18 @@ public abstract class AnnotatedApiUsageChecker
 
     private Description matchSymbol(Tree tree, Symbol symbol)
     {
-        if (symbol != null && isAnnotatedApi(symbol)) {
-            if (ignoredPackages.contains(symbol.packge().getQualifiedName().toString())) {
-                return NO_MATCH;
-            }
-            if (basePackages.isEmpty()) {
-                return describeMatch(tree);
-            }
-            Optional<String> packageName = findMatchingBasePackage(symbol);
-            if (packageName.isPresent()) {
-                return buildDescription(tree).setMessage(messageForMatchingBasePackage(packageName.get())).build();
-            }
+        if (symbol == null || !isAnnotatedApi(symbol)) {
+            return NO_MATCH;
+        }
+        if (ignoredPackages.contains(symbol.packge().getQualifiedName().toString())) {
+            return NO_MATCH;
+        }
+        if (basePackages.isEmpty()) {
+            return describeMatch(tree);
+        }
+        Optional<String> packageName = findMatchingBasePackage(symbol);
+        if (packageName.isPresent()) {
+            return buildDescription(tree).setMessage(messageForMatchingBasePackage(packageName.get())).build();
         }
         return NO_MATCH;
     }

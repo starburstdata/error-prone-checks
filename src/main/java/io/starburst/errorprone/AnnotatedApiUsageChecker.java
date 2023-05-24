@@ -174,7 +174,11 @@ public abstract class AnnotatedApiUsageChecker
 
         for (AnnotationMirror annotation : symbol.getAnnotationMirrors()) {
             if (annotation.getAnnotationType().toString().equals(annotationType)) {
-                return true;
+                if (symbol.owner == null || symbol.owner.getKind() != CLASS) {
+                    return true;
+                }
+                Name ownerName = symbol.owner.getQualifiedName();
+                return ownerName == null || !ignoredTypes.contains(ownerName.toString());
             }
         }
 

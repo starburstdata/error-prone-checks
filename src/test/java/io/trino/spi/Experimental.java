@@ -19,6 +19,10 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * A stand-in for the actual annotation in Trino SPI; we can't use the original
+ * because it would introduce dependency cycles.
+ */
 @Retention(RUNTIME)
 @Target({TYPE, FIELD, METHOD, CONSTRUCTOR})
 public @interface Experimental

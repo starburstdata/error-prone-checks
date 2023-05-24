@@ -12,6 +12,8 @@ package io.starburst.errorprone.testdata;
 
 import io.trino.spi.deprecated.ClassWithDeprecatedMember;
 import io.trino.spi.deprecated.DeprecatedClass;
+import io.trino.spi.deprecated.DeprecatedEnum;
+import io.trino.spi.deprecated.DeprecatedRecord;
 
 import java.util.List;
 
@@ -24,7 +26,16 @@ public class DeprecatedApiPositiveCases
     private final Object instantiation = new DeprecatedClass();
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    private final Object instantiationRecord = new DeprecatedRecord("foo");
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
     private DeprecatedClass asField;
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    private DeprecatedEnum asEnumField;
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    private DeprecatedRecord asRecordField;
 
     private final ClassWithDeprecatedMember classWithMember = new ClassWithDeprecatedMember();
 
@@ -33,13 +44,35 @@ public class DeprecatedApiPositiveCases
     {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    public void asParameter(DeprecatedEnum param)
+    {}
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    public void asParameter(DeprecatedRecord param)
+    {}
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
     public void asTypeArgument(List<DeprecatedClass> param)
+    {}
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    public void asTypeArgumentEnum(List<DeprecatedEnum> param)
+    {}
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    public void asTypeArgumentRecord(List<DeprecatedRecord> param)
     {}
 
     public void asLocalVariable()
     {
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
         DeprecatedClass var;
+
+        // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+        DeprecatedEnum varEnum;
+
+        // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+        DeprecatedRecord varRecord;
     }
 
     public void methodCall()
@@ -50,6 +83,18 @@ public class DeprecatedApiPositiveCases
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
     public DeprecatedClass asReturnType()
+    {
+        return null;
+    }
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    public DeprecatedEnum asReturnTypeEnum()
+    {
+        return null;
+    }
+
+    // BUG: Diagnostic contains: Do not use @Deprecated APIs.
+    public DeprecatedRecord asReturnTypeRecord()
     {
         return null;
     }

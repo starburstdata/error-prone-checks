@@ -164,9 +164,12 @@ public abstract class AnnotatedApiUsageChecker
      */
     private boolean isAnnotatedApi(Symbol symbol)
     {
-        Name name = symbol.getQualifiedName();
-        if (name != null && ignoredTypes.contains(name.toString())) {
-            return false;
+        // checking if type is ignored only makes sense for types:
+        if (symbol.getKind() == CLASS) {
+            Name name = symbol.getQualifiedName();
+            if (name != null && ignoredTypes.contains(name.toString())) {
+                return false;
+            }
         }
 
         for (AnnotationMirror annotation : symbol.getAnnotationMirrors()) {

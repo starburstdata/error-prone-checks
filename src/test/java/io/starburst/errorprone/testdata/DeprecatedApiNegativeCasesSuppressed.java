@@ -12,6 +12,8 @@ package io.starburst.errorprone.testdata;
 
 import io.trino.spi.deprecated.ClassWithDeprecatedMember;
 import io.trino.spi.deprecated.DeprecatedClass;
+import io.trino.spi.deprecated.DeprecatedEnum;
+import io.trino.spi.deprecated.DeprecatedRecord;
 
 import java.util.List;
 
@@ -24,7 +26,16 @@ public class DeprecatedApiNegativeCasesSuppressed
     private final Object instantiation = new DeprecatedClass();
 
     @SuppressWarnings("DeprecatedApi")
+    private final Object instantiationRecord = new DeprecatedRecord("foo");
+
+    @SuppressWarnings("DeprecatedApi")
     private DeprecatedClass asField;
+
+    @SuppressWarnings("DeprecatedApi")
+    private DeprecatedEnum asEnumField;
+
+    @SuppressWarnings("DeprecatedApi")
+    private DeprecatedRecord asRecordField;
 
     private final ClassWithDeprecatedMember classWithMember = new ClassWithDeprecatedMember();
 
@@ -33,13 +44,35 @@ public class DeprecatedApiNegativeCasesSuppressed
     {}
 
     @SuppressWarnings("DeprecatedApi")
+    public void asParameter(DeprecatedEnum param)
+    {}
+
+    @SuppressWarnings("DeprecatedApi")
+    public void asParameter(DeprecatedRecord param)
+    {}
+
+    @SuppressWarnings("DeprecatedApi")
     public void asTypeArgument(List<DeprecatedClass> param)
+    {}
+
+    @SuppressWarnings("DeprecatedApi")
+    public void asTypeArgumentEnum(List<DeprecatedEnum> param)
+    {}
+
+    @SuppressWarnings("DeprecatedApi")
+    public void asTypeArgumentRecord(List<DeprecatedRecord> param)
     {}
 
     public void asLocalVariable()
     {
         @SuppressWarnings("DeprecatedApi")
         DeprecatedClass var;
+
+        @SuppressWarnings("DeprecatedApi")
+        DeprecatedEnum varEnum;
+
+        @SuppressWarnings("DeprecatedApi")
+        DeprecatedRecord varRecord;
     }
 
     @SuppressWarnings("DeprecatedApi")
@@ -64,6 +97,18 @@ public class DeprecatedApiNegativeCasesSuppressed
     {
         @SuppressWarnings("DeprecatedApi")
         String ignore = STATIC_MEMBER;
+    }
+
+    @SuppressWarnings("DeprecatedApi")
+    public DeprecatedEnum asReturnTypeEnum()
+    {
+        return null;
+    }
+
+    @SuppressWarnings("DeprecatedApi")
+    public DeprecatedEnum asReturnTypeRecord()
+    {
+        return null;
     }
 
     @SuppressWarnings("DeprecatedApi")

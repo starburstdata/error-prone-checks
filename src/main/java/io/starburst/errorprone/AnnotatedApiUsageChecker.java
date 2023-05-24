@@ -132,11 +132,11 @@ public abstract class AnnotatedApiUsageChecker
         if (basePackages.isEmpty()) {
             return describeMatch(tree);
         }
-        Optional<String> packageName = findMatchingBasePackage(symbol);
-        if (packageName.isPresent()) {
-            return buildDescription(tree).setMessage(messageForMatchingBasePackage(packageName.get())).build();
-        }
-        return NO_MATCH;
+        return findMatchingBasePackage(symbol)
+                .map(packageName -> buildDescription(tree)
+                        .setMessage(messageForMatchingBasePackage(packageName))
+                        .build())
+                .orElse(NO_MATCH);
     }
 
     private static boolean isSuperCall(IdentifierTree tree)

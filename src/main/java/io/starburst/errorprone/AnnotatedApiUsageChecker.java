@@ -30,6 +30,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Name;
 
+import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public abstract class AnnotatedApiUsageChecker
      * it's declared in) is annotated. This is used to prevent things like type parameters that happen
      * to be declared in an annotated class from being flagged.
      */
-    private static final Set<ElementKind> INHERITS_ANNOTATION_FROM_OWNER = Set.of(
+    private static final Set<ElementKind> INHERITS_ANNOTATION_FROM_OWNER = EnumSet.of(
             FIELD, METHOD, CONSTRUCTOR, ENUM_CONSTANT, CLASS, INTERFACE, ENUM, ANNOTATION_TYPE);
 
     private final String annotationType;

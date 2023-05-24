@@ -42,52 +42,36 @@ public class TestDeprecatedApiChecker
     @Test
     public void testNegativeCasesWithIgnoredPackages()
     {
-        String path = "Test.java";
-        String lines = """
-                import io.trino.spi.ignored.IgnoredDeprecatedClass;
-                public class Test {
-                    private IgnoredDeprecatedClass asField;
-                }
-                """;
-
         // API package is ignored
         compilationTestHelper()
-                .setArgs("-XepOpt:DeprecatedApi:IgnoredPackages=io.trino.spi.ignored")
-                .addSourceLines(path, lines)
+                .setArgs("-XepOpt:DeprecatedApi:IgnoredPackages=io.trino.spi.deprecated")
+                .addSourceFile("DeprecatedApiNegativeCasesIgnored.java")
                 .doTest();
 
         // API package matches base but is ignored
         compilationTestHelper()
                 .setArgs(
                         "-XepOpt:DeprecatedApi:BasePackages=io.trino.spi",
-                        "-XepOpt:DeprecatedApi:IgnoredPackages=io.trino.spi.ignored")
-                .addSourceLines(path, lines)
+                        "-XepOpt:DeprecatedApi:IgnoredPackages=io.trino.spi.deprecated")
+                .addSourceFile("DeprecatedApiNegativeCasesIgnored.java")
                 .doTest();
     }
 
     @Test
     public void testNegativeCasesWithIgnoredTypes()
     {
-        String path = "Test.java";
-        String lines = """
-                import io.trino.spi.ignored.IgnoredDeprecatedClass;
-                public class Test {
-                    private IgnoredDeprecatedClass asField;
-                }
-                """;
-
         // API package is ignored
         compilationTestHelper()
-                .setArgs("-XepOpt:DeprecatedApi:IgnoredTypes=io.trino.spi.ignored.IgnoredDeprecatedClass")
-                .addSourceLines(path, lines)
+                .setArgs("-XepOpt:DeprecatedApi:IgnoredTypes=io.trino.spi.deprecated.DeprecatedClass,io.trino.spi.deprecated.ClassWithDeprecatedMember")
+                .addSourceFile("DeprecatedApiNegativeCasesIgnored.java")
                 .doTest();
 
         // API package matches base but is ignored
         compilationTestHelper()
                 .setArgs(
                         "-XepOpt:DeprecatedApi:BasePackages=io.trino.spi",
-                        "-XepOpt:DeprecatedApi:IgnoredTypes=io.trino.spi.ignored.IgnoredDeprecatedClass")
-                .addSourceLines(path, lines)
+                        "-XepOpt:DeprecatedApi:IgnoredTypes=io.trino.spi.deprecated.DeprecatedClass,io.trino.spi.deprecated.ClassWithDeprecatedMember")
+                .addSourceFile("DeprecatedApiNegativeCasesIgnored.java")
                 .doTest();
     }
 

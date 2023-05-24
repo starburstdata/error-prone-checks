@@ -42,52 +42,36 @@ public class TestTrinoExperimentalSpiChecker
     @Test
     public void testNegativeCasesWithIgnoredPackages()
     {
-        String path = "Test.java";
-        String lines = """
-                import io.trino.spi.ignored.IgnoredExperimentalClass;
-                public class Test {
-                    private IgnoredExperimentalClass asField;
-                }
-                """;
-
         // SPI package is ignored
         compilationTestHelper()
-                .setArgs("-XepOpt:TrinoExperimentalSpi:IgnoredPackages=io.trino.spi.ignored")
-                .addSourceLines(path, lines)
+                .setArgs("-XepOpt:TrinoExperimentalSpi:IgnoredPackages=io.trino.spi.experimental")
+                .addSourceFile("TrinoExperimentalSpiNegativeCasesIgnored.java")
                 .doTest();
 
         // SPI package matches base but is ignored
         compilationTestHelper()
                 .setArgs(
                         "-XepOpt:TrinoExperimentalSpi:BasePackages=io.trino.spi",
-                        "-XepOpt:TrinoExperimentalSpi:IgnoredPackages=io.trino.spi.ignored")
-                .addSourceLines(path, lines)
+                        "-XepOpt:TrinoExperimentalSpi:IgnoredPackages=io.trino.spi.experimental")
+                .addSourceFile("TrinoExperimentalSpiNegativeCasesIgnored.java")
                 .doTest();
     }
 
     @Test
     public void testNegativeCasesWithIgnoredTypes()
     {
-        String path = "Test.java";
-        String lines = """
-                import io.trino.spi.ignored.IgnoredExperimentalClass;
-                public class Test {
-                    private IgnoredExperimentalClass asField;
-                }
-                """;
-
         // SPI class is ignored
         compilationTestHelper()
-                .setArgs("-XepOpt:TrinoExperimentalSpi:IgnoredTypes=io.trino.spi.ignored.IgnoredExperimentalClass")
-                .addSourceLines(path, lines)
+                .setArgs("-XepOpt:TrinoExperimentalSpi:IgnoredTypes=io.trino.spi.experimental.ExperimentalClass,io.trino.spi.experimental.ClassWithExperimentalMember")
+                .addSourceFile("TrinoExperimentalSpiNegativeCasesIgnored.java")
                 .doTest();
 
         // SPI package matches base but the class is ignored
         compilationTestHelper()
                 .setArgs(
                         "-XepOpt:TrinoExperimentalSpi:BasePackages=io.trino.spi",
-                        "-XepOpt:TrinoExperimentalSpi:IgnoredTypes=io.trino.spi.ignored.IgnoredExperimentalClass")
-                .addSourceLines(path, lines)
+                        "-XepOpt:TrinoExperimentalSpi:IgnoredTypes=io.trino.spi.experimental.ExperimentalClass,io.trino.spi.experimental.ClassWithExperimentalMember")
+                .addSourceFile("TrinoExperimentalSpiNegativeCasesIgnored.java")
                 .doTest();
     }
 

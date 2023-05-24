@@ -15,43 +15,44 @@ import io.trino.spi.deprecated.DeprecatedClass;
 
 import java.util.List;
 
+@SuppressWarnings({"deprecation", "unused"})
 public class DeprecatedApiNegativeCasesSuppressed
 {
-    @SuppressWarnings({"deprecation", "DeprecatedApi"})
+    @SuppressWarnings("DeprecatedApi")
     private final Object instantiation = new DeprecatedClass();
 
-    @SuppressWarnings({"deprecation", "DeprecatedApi"})
+    @SuppressWarnings("DeprecatedApi")
     private DeprecatedClass asField;
 
     private final ClassWithDeprecatedMember classWithMember = new ClassWithDeprecatedMember();
 
-    @SuppressWarnings({"deprecation", "DeprecatedApi"})
+    @SuppressWarnings("DeprecatedApi")
     public void asParameter(DeprecatedClass param)
     {}
 
-    @SuppressWarnings({"deprecation", "DeprecatedApi"})
+    @SuppressWarnings("DeprecatedApi")
     public void asTypeArgument(List<DeprecatedClass> param)
     {}
 
     public void asLocalVariable()
     {
-        @SuppressWarnings({"deprecation", "DeprecatedApi"})
+        @SuppressWarnings("DeprecatedApi")
         DeprecatedClass var;
     }
 
-    @SuppressWarnings({"deprecation", "DeprecatedApi"})
+    @SuppressWarnings("DeprecatedApi")
     public void methodCall()
     {
         classWithMember.deprecated();
     }
 
-    @SuppressWarnings({"deprecation", "DeprecatedApi"})
+    @SuppressWarnings("DeprecatedApi")
     public DeprecatedClass asReturnType()
     {
         return null;
     }
 
-    @SuppressWarnings({"deprecation", "DeprecatedApi"})
+    @SuppressWarnings("DeprecatedApi")
     public static class AsBaseClass
             extends DeprecatedClass
     {}
@@ -59,7 +60,7 @@ public class DeprecatedApiNegativeCasesSuppressed
     public static class Overrides
             extends ClassWithDeprecatedMember
     {
-        @SuppressWarnings({"deprecation", "DeprecatedApi"})
+        @SuppressWarnings("DeprecatedApi")
         @Override
         public void deprecated()
         {}

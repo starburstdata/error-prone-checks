@@ -10,6 +10,7 @@
 
 package io.trino.spi.deprecated;
 
+@SuppressWarnings("DeprecatedIsStillUsed")
 public class ClassWithDeprecatedMember
 {
     @Deprecated

@@ -10,6 +10,7 @@
 
 package io.trino.spi.deprecated;
 
+@SuppressWarnings("unused")
 public class NotDeprecatedClass
 {
     public void foo()

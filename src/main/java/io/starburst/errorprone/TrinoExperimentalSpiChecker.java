@@ -15,6 +15,8 @@ import com.google.errorprone.BugPattern;
 import com.google.errorprone.ErrorProneFlags;
 import com.google.errorprone.bugpatterns.BugChecker;
 
+import javax.inject.Inject;
+
 import java.util.Collections;
 
 @AutoService(BugChecker.class)
@@ -34,6 +36,7 @@ public final class TrinoExperimentalSpiChecker
         this(ErrorProneFlags.empty());
     }
 
+    @Inject
     public TrinoExperimentalSpiChecker(ErrorProneFlags flags)
     {
         super(

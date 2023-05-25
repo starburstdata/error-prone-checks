@@ -34,7 +34,7 @@
         <project.build.targetJdk>17</project.build.targetJdk>
 
         <dep.auto-service.version>1.0.1</dep.auto-service.version>
-        <dep.error-prone.version>2.16</dep.error-prone.version>
+        <dep.error-prone.version>2.19.1</dep.error-prone.version>
         <dep.compile-testing.version>0.19</dep.compile-testing.version>
 
         <air.release.preparation-goals>clean verify -DskipTests</air.release.preparation-goals>
@@ -54,6 +54,10 @@
             <version>${dep.auto-service.version}</version>
         </dependency>
         <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_check_api</artifactId>
             <version>${dep.error-prone.version}</version>
@@ -70,8 +74,8 @@
             <version>${dep.error-prone.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
+                    <groupId>org.checkerframework</groupId>
+                    <artifactId>checker-qual</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -80,29 +84,6 @@
             <artifactId>error_prone_core</artifactId>
             <version>${dep.error-prone.version}</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${dep.guava.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <!-- this empty dependency is a hack and not needed -->
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>listenablefuture</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.checkerframework</groupId>
-                    <artifactId>checker-qual</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.testing.compile</groupId>

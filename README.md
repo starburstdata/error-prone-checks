@@ -46,7 +46,7 @@ In `pom.xml`:
             <path>
                 <groupId>io.starburst.errorprone</groupId>
                 <artifactId>error-prone-checks</artifactId>
-                <version>3</version>
+                <version>4</version>
             </path>
         </annotationProcessorPaths>
     </configuration>

@@ -17,8 +17,6 @@ import com.google.errorprone.bugpatterns.BugChecker;
 
 import javax.inject.Inject;
 
-import java.util.Collections;
-
 @AutoService(BugChecker.class)
 @BugPattern(
         name = "DeprecatedApi",
@@ -41,9 +39,9 @@ public final class DeprecatedApiChecker
     {
         super(
                 "java.lang.Deprecated",
-                flags.getSet("DeprecatedApi:BasePackages").orElse(Collections.emptySet()),
-                flags.getSet("DeprecatedApi:IgnoredPackages").orElse(Collections.emptySet()),
-                flags.getSet("DeprecatedApi:IgnoredTypes").orElse(Collections.emptySet()));
+                flags.getSetOrEmpty("DeprecatedApi:BasePackages"),
+                flags.getSetOrEmpty("DeprecatedApi:IgnoredPackages"),
+                flags.getSetOrEmpty("DeprecatedApi:IgnoredTypes"));
     }
 
     @Override

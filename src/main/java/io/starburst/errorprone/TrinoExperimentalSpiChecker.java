@@ -17,8 +17,6 @@ import com.google.errorprone.bugpatterns.BugChecker;
 
 import javax.inject.Inject;
 
-import java.util.Collections;
-
 @AutoService(BugChecker.class)
 @BugPattern(
         name = "TrinoExperimentalSpi",
@@ -41,9 +39,9 @@ public final class TrinoExperimentalSpiChecker
     {
         super(
                 "io.trino.spi.Experimental",
-                flags.getSet("TrinoExperimentalSpi:BasePackages").orElse(Collections.emptySet()),
-                flags.getSet("TrinoExperimentalSpi:IgnoredPackages").orElse(Collections.emptySet()),
-                flags.getSet("TrinoExperimentalSpi:IgnoredTypes").orElse(Collections.emptySet()));
+                flags.getSetOrEmpty("TrinoExperimentalSpi:BasePackages"),
+                flags.getSetOrEmpty("TrinoExperimentalSpi:IgnoredPackages"),
+                flags.getSetOrEmpty("TrinoExperimentalSpi:IgnoredTypes"));
     }
 
     @Override

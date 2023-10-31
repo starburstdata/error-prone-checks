@@ -10,7 +10,7 @@
 
     <groupId>io.starburst.errorprone</groupId>
     <artifactId>error-prone-checks</artifactId>
-    <version>5-SNAPSHOT</version>
+    <version>5</version>
 
     <name>error-prone-checks</name>
     <description>Additional Error Prone bug checkers</description>
@@ -24,7 +24,7 @@
     <scm>
         <connection>scm:git:git://github.com/starburstdata/error-prone-checks.git</connection>
         <url>https://github.com/starburstdata/error-prone-checks</url>
-        <tag>HEAD</tag>
+        <tag>5</tag>
     </scm>
 
     <properties>

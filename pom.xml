@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>139</version>
+        <version>206</version>
     </parent>
 
     <groupId>io.starburst.errorprone</groupId>
@@ -42,12 +42,11 @@
         <air.license.header-file>${air.main.basedir}/.mvn/license/starburst-header.txt</air.license.header-file>
         <air.check.skip-pmd>true</air.check.skip-pmd>
 
-        <project.build.targetJdk>17</project.build.targetJdk>
+        <project.build.targetJdk>21</project.build.targetJdk>
 
         <dep.auto-service.version>1.0.1</dep.auto-service.version>
         <dep.error-prone.version>2.23.0</dep.error-prone.version>
         <dep.compile-testing.version>0.19</dep.compile-testing.version>
-        <dep.guava.version>32.1.1-jre</dep.guava.version>
 
         <air.release.preparation-goals>clean verify -DskipTests</air.release.preparation-goals>
 
@@ -88,8 +87,19 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.checkerframework</groupId>
+                    <artifactId>checker-qual</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
+            <version>1</version>
         </dependency>
         <dependency>
             <groupId>com.google.errorprone</groupId>

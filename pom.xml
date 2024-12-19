@@ -45,7 +45,6 @@
         <project.build.targetJdk>21</project.build.targetJdk>
 
         <dep.auto-service.version>1.0.1</dep.auto-service.version>
-        <dep.error-prone.version>2.23.0</dep.error-prone.version>
         <dep.compile-testing.version>0.19</dep.compile-testing.version>
 
         <air.release.preparation-goals>clean verify -DskipTests</air.release.preparation-goals>
@@ -67,7 +66,7 @@
         <dependency>
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_annotation</artifactId>
-            <version>${dep.error-prone.version}</version>
+            <version>${dep.errorprone.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.checkerframework</groupId>
@@ -78,7 +77,7 @@
         <dependency>
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_check_api</artifactId>
-            <version>${dep.error-prone.version}</version>
+            <version>${dep.errorprone.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.checkerframework</groupId>
@@ -104,13 +103,13 @@
         <dependency>
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_core</artifactId>
-            <version>${dep.error-prone.version}</version>
+            <version>${dep.errorprone.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_test_helpers</artifactId>
-            <version>${dep.error-prone.version}</version>
+            <version>${dep.errorprone.version}</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -209,7 +208,7 @@
                             <path>
                                 <groupId>com.google.errorprone</groupId>
                                 <artifactId>error_prone_core</artifactId>
-                                <version>${dep.error-prone.version}</version>
+                                <version>${dep.errorprone.version}</version>
                             </path>
                         </annotationProcessorPaths>
                         <testExcludes>

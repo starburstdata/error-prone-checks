@@ -11,9 +11,8 @@
 package io.starburst.errorprone;
 
 import com.google.errorprone.CompilationTestHelper;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
-@Test
 public class TestDeprecatedApiChecker
 {
     private CompilationTestHelper compilationTestHelper()

@@ -26,11 +26,9 @@ public class TrinoExperimentalSpiNegativeCases
 
     private final ClassWithExperimentalMember classWithMember = new ClassWithExperimentalMember();
 
-    public void asParameter(NotExperimentalClass param)
-    {}
+    public void asParameter(NotExperimentalClass param) {}
 
-    public void asTypeParameter(List<NotExperimentalClass> param)
-    {}
+    public void asTypeParameter(List<NotExperimentalClass> param) {}
 
     public void asLocalVariable()
     {
@@ -58,15 +56,13 @@ public class TrinoExperimentalSpiNegativeCases
     }
 
     public static class AsBaseClass
-            extends NotExperimentalClass
-    {}
+            extends NotExperimentalClass {}
 
     public static class Overrides
             extends ClassWithExperimentalMember
     {
         @SuppressWarnings("RedundantMethodOverride")
         @Override
-        public void notExperimental()
-        {}
+        public void notExperimental() {}
     }
 }

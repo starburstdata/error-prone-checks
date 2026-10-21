@@ -12,6 +12,4 @@ package io.trino.spi.deprecated;
 
 @SuppressWarnings({"DeprecatedIsStillUsed", "unused"})
 @Deprecated
-public record DeprecatedRecord(String foo)
-{
-}
+public record DeprecatedRecord(String foo) {}

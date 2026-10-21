@@ -22,8 +22,8 @@ import javax.inject.Inject;
         name = "TrinoExperimentalSpi",
         summary = "Do not use Trino @Experimental SPIs.",
         explanation = """
-                Trino SPIs marked as @Experimental should be avoided \
-                in libraries and shared components that other projects depend on.""",
+                      Trino SPIs marked as @Experimental should be avoided \
+                      in libraries and shared components that other projects depend on.""",
         linkType = BugPattern.LinkType.NONE,
         severity = BugPattern.SeverityLevel.WARNING)
 public final class TrinoExperimentalSpiChecker
@@ -37,8 +37,7 @@ public final class TrinoExperimentalSpiChecker
     @Inject
     public TrinoExperimentalSpiChecker(ErrorProneFlags flags)
     {
-        super(
-                "io.trino.spi.Experimental",
+        super("io.trino.spi.Experimental",
                 flags.getSetOrEmpty("TrinoExperimentalSpi:BasePackages"),
                 flags.getSetOrEmpty("TrinoExperimentalSpi:IgnoredPackages"),
                 flags.getSetOrEmpty("TrinoExperimentalSpi:IgnoredTypes"));

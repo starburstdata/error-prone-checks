@@ -83,11 +83,11 @@ public class TestDeprecatedApiChecker
                 .addSourceLines(
                         "Test.java",
                         """
-                                import io.trino.spi.deprecated.DeprecatedClass;
-                                public class Test {
-                                    private DeprecatedClass asField;
-                                }
-                                """)
+                        import io.trino.spi.deprecated.DeprecatedClass;
+                        public class Test {
+                            private DeprecatedClass asField;
+                        }
+                        """)
                 .doTest();
     }
 
@@ -100,14 +100,14 @@ public class TestDeprecatedApiChecker
                 .addSourceLines(
                         "Test.java",
                         """
-                                import io.trino.spi.deprecated.DeprecatedClass;
-                                import io.trino.spi.ignored.IgnoredDeprecatedClass;
-                                public class Test {
-                                    // BUG: Diagnostic contains: Do not use @Deprecated APIs from 'io.trino.spi.deprecated'.
-                                    private DeprecatedClass asField1;
-                                    private IgnoredDeprecatedClass asField2;
-                                }
-                                """)
+                        import io.trino.spi.deprecated.DeprecatedClass;
+                        import io.trino.spi.ignored.IgnoredDeprecatedClass;
+                        public class Test {
+                            // BUG: Diagnostic contains: Do not use @Deprecated APIs from 'io.trino.spi.deprecated'.
+                            private DeprecatedClass asField1;
+                            private IgnoredDeprecatedClass asField2;
+                        }
+                        """)
                 .doTest();
 
         // Both API packages match base
@@ -116,15 +116,15 @@ public class TestDeprecatedApiChecker
                 .addSourceLines(
                         "Test.java",
                         """
-                                import io.trino.spi.deprecated.DeprecatedClass;
-                                import io.trino.spi.ignored.IgnoredDeprecatedClass;
-                                public class Test {
-                                    // BUG: Diagnostic contains: Do not use @Deprecated APIs from 'io.trino.spi.deprecated'.
-                                    private DeprecatedClass asField1;
-                                    // BUG: Diagnostic contains: Do not use @Deprecated APIs from 'io.trino.spi.ignored'.
-                                    private IgnoredDeprecatedClass asField2;
-                                }
-                                """)
+                        import io.trino.spi.deprecated.DeprecatedClass;
+                        import io.trino.spi.ignored.IgnoredDeprecatedClass;
+                        public class Test {
+                            // BUG: Diagnostic contains: Do not use @Deprecated APIs from 'io.trino.spi.deprecated'.
+                            private DeprecatedClass asField1;
+                            // BUG: Diagnostic contains: Do not use @Deprecated APIs from 'io.trino.spi.ignored'.
+                            private IgnoredDeprecatedClass asField2;
+                        }
+                        """)
                 .doTest();
     }
 }

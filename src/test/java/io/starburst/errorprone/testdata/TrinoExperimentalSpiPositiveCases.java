@@ -40,28 +40,22 @@ public class TrinoExperimentalSpiPositiveCases
     private final ClassWithExperimentalMember classWithMember = new ClassWithExperimentalMember();
 
     // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-    public void asParameter(ExperimentalClass param)
-    {}
+    public void asParameter(ExperimentalClass param) {}
 
     // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-    public void asParameter(ExperimentalEnum param)
-    {}
+    public void asParameter(ExperimentalEnum param) {}
 
     // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-    public void asParameter(ExperimentalRecord param)
-    {}
+    public void asParameter(ExperimentalRecord param) {}
 
     // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-    public void asTypeArgument(List<ExperimentalClass> param)
-    {}
+    public void asTypeArgument(List<ExperimentalClass> param) {}
 
     // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-    public void asTypeArgumentEnum(List<ExperimentalEnum> param)
-    {}
+    public void asTypeArgumentEnum(List<ExperimentalEnum> param) {}
 
     // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-    public void asTypeArgumentRecord(List<ExperimentalRecord> param)
-    {}
+    public void asTypeArgumentRecord(List<ExperimentalRecord> param) {}
 
     public void asLocalVariable()
     {
@@ -113,15 +107,13 @@ public class TrinoExperimentalSpiPositiveCases
 
     public static class AsBaseClass
             // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-            extends ExperimentalClass
-    {}
+            extends ExperimentalClass {}
 
     public static class Overrides
             extends ClassWithExperimentalMember
     {
         @Override
         // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-        public void experimental()
-        {}
+        public void experimental() {}
     }
 }

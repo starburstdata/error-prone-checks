@@ -40,28 +40,22 @@ public class TrinoExperimentalSpiNegativeCasesSuppressed
     private final ClassWithExperimentalMember classWithMember = new ClassWithExperimentalMember();
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asParameter(ExperimentalClass param)
-    {}
+    public void asParameter(ExperimentalClass param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asParameter(ExperimentalEnum param)
-    {}
+    public void asParameter(ExperimentalEnum param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asParameter(ExperimentalRecord param)
-    {}
+    public void asParameter(ExperimentalRecord param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asTypeArgument(List<ExperimentalClass> param)
-    {}
+    public void asTypeArgument(List<ExperimentalClass> param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asTypeArgumentEnum(List<ExperimentalEnum> param)
-    {}
+    public void asTypeArgumentEnum(List<ExperimentalEnum> param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asTypeArgumentRecord(List<ExperimentalRecord> param)
-    {}
+    public void asTypeArgumentRecord(List<ExperimentalRecord> param) {}
 
     public void asLocalVariable()
     {
@@ -113,15 +107,13 @@ public class TrinoExperimentalSpiNegativeCasesSuppressed
 
     @SuppressWarnings("TrinoExperimentalSpi")
     public static class AsBaseClass
-            extends ExperimentalClass
-    {}
+            extends ExperimentalClass {}
 
     public static class Overrides
             extends ClassWithExperimentalMember
     {
         @SuppressWarnings("TrinoExperimentalSpi")
         @Override
-        public void experimental()
-        {}
+        public void experimental() {}
     }
 }

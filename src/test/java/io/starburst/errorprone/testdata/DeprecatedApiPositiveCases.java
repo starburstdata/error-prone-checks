@@ -40,28 +40,22 @@ public class DeprecatedApiPositiveCases
     private final ClassWithDeprecatedMember classWithMember = new ClassWithDeprecatedMember();
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asParameter(DeprecatedClass param)
-    {}
+    public void asParameter(DeprecatedClass param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asParameter(DeprecatedEnum param)
-    {}
+    public void asParameter(DeprecatedEnum param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asParameter(DeprecatedRecord param)
-    {}
+    public void asParameter(DeprecatedRecord param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asTypeArgument(List<DeprecatedClass> param)
-    {}
+    public void asTypeArgument(List<DeprecatedClass> param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asTypeArgumentEnum(List<DeprecatedEnum> param)
-    {}
+    public void asTypeArgumentEnum(List<DeprecatedEnum> param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asTypeArgumentRecord(List<DeprecatedRecord> param)
-    {}
+    public void asTypeArgumentRecord(List<DeprecatedRecord> param) {}
 
     public void asLocalVariable()
     {
@@ -113,15 +107,13 @@ public class DeprecatedApiPositiveCases
 
     public static class AsBaseClass
             // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-            extends DeprecatedClass
-    {}
+            extends DeprecatedClass {}
 
     public static class Overrides
             extends ClassWithDeprecatedMember
     {
         @Override
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        public void deprecated()
-        {}
+        public void deprecated() {}
     }
 }

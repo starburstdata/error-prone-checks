@@ -83,11 +83,11 @@ public class TestTrinoExperimentalSpiChecker
                 .addSourceLines(
                         "Test.java",
                         """
-                                import io.trino.spi.experimental.ExperimentalClass;
-                                public class Test {
-                                    private ExperimentalClass asField;
-                                }
-                                """)
+                        import io.trino.spi.experimental.ExperimentalClass;
+                        public class Test {
+                            private ExperimentalClass asField;
+                        }
+                        """)
                 .doTest();
     }
 
@@ -100,14 +100,14 @@ public class TestTrinoExperimentalSpiChecker
                 .addSourceLines(
                         "Test.java",
                         """
-                                import io.trino.spi.experimental.ExperimentalClass;
-                                import io.trino.spi.ignored.IgnoredExperimentalClass;
-                                public class Test {
-                                    // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs from 'io.trino.spi.experimental'.
-                                    private ExperimentalClass asField1;
-                                    private IgnoredExperimentalClass asField2;
-                                }
-                                """)
+                        import io.trino.spi.experimental.ExperimentalClass;
+                        import io.trino.spi.ignored.IgnoredExperimentalClass;
+                        public class Test {
+                            // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs from 'io.trino.spi.experimental'.
+                            private ExperimentalClass asField1;
+                            private IgnoredExperimentalClass asField2;
+                        }
+                        """)
                 .doTest();
 
         // Both SPI packages match base
@@ -116,15 +116,15 @@ public class TestTrinoExperimentalSpiChecker
                 .addSourceLines(
                         "Test.java",
                         """
-                                import io.trino.spi.experimental.ExperimentalClass;
-                                import io.trino.spi.ignored.IgnoredExperimentalClass;
-                                public class Test {
-                                    // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs from 'io.trino.spi.experimental'.
-                                    private ExperimentalClass asField1;
-                                    // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs from 'io.trino.spi.ignored'.
-                                    private IgnoredExperimentalClass asField2;
-                                }
-                                """)
+                        import io.trino.spi.experimental.ExperimentalClass;
+                        import io.trino.spi.ignored.IgnoredExperimentalClass;
+                        public class Test {
+                            // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs from 'io.trino.spi.experimental'.
+                            private ExperimentalClass asField1;
+                            // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs from 'io.trino.spi.ignored'.
+                            private IgnoredExperimentalClass asField2;
+                        }
+                        """)
                 .doTest();
     }
 }

@@ -26,11 +26,9 @@ public class DeprecatedApiNegativeCasesIgnored
 
     private final ClassWithDeprecatedMember classWithMember = new ClassWithDeprecatedMember();
 
-    public void asParameter(DeprecatedClass param)
-    {}
+    public void asParameter(DeprecatedClass param) {}
 
-    public void asTypeArgument(List<DeprecatedClass> param)
-    {}
+    public void asTypeArgument(List<DeprecatedClass> param) {}
 
     public void asLocalVariable()
     {
@@ -58,14 +56,12 @@ public class DeprecatedApiNegativeCasesIgnored
     }
 
     public static class AsBaseClass
-            extends DeprecatedClass
-    {}
+            extends DeprecatedClass {}
 
     public static class Overrides
             extends ClassWithDeprecatedMember
     {
         @Override
-        public void deprecated()
-        {}
+        public void deprecated() {}
     }
 }

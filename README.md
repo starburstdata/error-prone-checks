@@ -34,9 +34,6 @@ Allowed values are: `ERROR`, `WARN`, `OFF`, `DEFAULT`.
 
 ### Prefer Guava immutable collections
 
-This checker requires an artifact built from this revision (`6-SNAPSHOT` during
-development). Publish a new release and update the consumer version before enabling it in CI.
-
 Enable `-Xep:PreferGuavaImmutableCollections:ERROR` to reject `List.of/copyOf`,
 `Set.of/copyOf`, `Map.of/ofEntries/copyOf`, and `Collectors.toUnmodifiableList/Set/Map`.
 Resolved methods are checked, including static imports and method references. The checker
@@ -48,9 +45,20 @@ Suggested fixes cover list factories, `List.copyOf` calls and method references,
 collectors receive diagnostics without fixes because their declared generic result types
 may require `List` rather than `ImmutableList`. Array overloads use `ImmutableList.copyOf(array)`
 when the JDK factory expands the array; explicit array elements remain array elements.
-Calls inside inferred `var` initializers receive no fix because changing the expression's
-static type can break generic containers, such as `Optional<List<T>>`. Guava and JDK lists
-also differ in null query handling; review callers that depend on those behaviors.
+Each candidate fix is compiled before being offered; fixes that break generic inference
+receive diagnostics only. Calls inside inferred `var` initializers also receive no fix:
+`var nested = Optional.of(List.of("a"))` infers `Optional<List<String>>`, while replacing
+`List.of` with `ImmutableList.of` infers `Optional<ImmutableList<String>>`. These types are
+not assignable to each other. For a manual migration, an explicit type witness preserves
+the container's type:
+
+```java
+var nested = Optional.<List<String>>of(ImmutableList.of("a"));
+```
+
+JDK unmodifiable collectors and Guava immutable collectors reject null elements, keys,
+and values, but may throw at different stages of collection. Guava and JDK lists also
+differ in null query handling; review callers that depend on those behaviors.
 Set and map APIs receive diagnostics without automatic fixes because duplicate handling,
 iteration order, or merge semantics need review. Factory method references also receive
 no fix because their target types can change overload selection. `Stream.toList()` is outside

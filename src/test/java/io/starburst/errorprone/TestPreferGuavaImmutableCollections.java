@@ -12,7 +12,17 @@ package io.starburst.errorprone;
 
 import com.google.errorprone.BugCheckerRefactoringTestHelper;
 import com.google.errorprone.CompilationTestHelper;
+import org.gaul.modernizer_maven_annotations.SuppressModernizer;
 import org.junit.jupiter.api.Test;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
+import static java.util.function.Function.identity;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestPreferGuavaImmutableCollections
 {
@@ -39,11 +49,19 @@ public class TestPreferGuavaImmutableCollections
                                 // BUG: Diagnostic contains: Prefer Guava immutable collections
                                 List.copyOf(values);
                                 // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                Set.of();
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
                                 Set.of("a");
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                java.util.Set.of("a", "b");
                                 // BUG: Diagnostic contains: Prefer Guava immutable collections
                                 Set.copyOf(values);
                                 // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                Map.of();
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
                                 Map.of("a", "b");
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                java.util.Map.of("a", "b");
                                 // BUG: Diagnostic contains: Prefer Guava immutable collections
                                 Map.ofEntries(Map.entry("a", "b"));
                                 // BUG: Diagnostic contains: Prefer Guava immutable collections
@@ -56,6 +74,60 @@ public class TestPreferGuavaImmutableCollections
                                 values.stream().collect(Collectors.toUnmodifiableMap(x -> x, x -> x));
                                 // BUG: Diagnostic contains: Prefer Guava immutable collections
                                 values.stream().collect(Collectors.toUnmodifiableMap(x -> x, x -> x, (a, b) -> a));
+                            }
+                        }
+                        """)
+                .addSourceLines("SetImports.java",
+                        """
+                        import java.util.Collection;
+                        import static java.util.Set.copyOf;
+                        import static java.util.Set.of;
+                        class SetImports {
+                            void test(Collection<String> values) {
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                of();
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                of("a", "b");
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                copyOf(values);
+                            }
+                        }
+                        """)
+                .addSourceLines("MapImports.java",
+                        """
+                        import java.util.Map;
+                        import static java.util.Map.copyOf;
+                        import static java.util.Map.of;
+                        import static java.util.Map.ofEntries;
+                        class MapImports {
+                            void test(Map<String, String> values) {
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                of();
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                of("a", "b");
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                ofEntries(Map.entry("a", "b"));
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                copyOf(values);
+                            }
+                        }
+                        """)
+                .addSourceLines("CollectorImports.java",
+                        """
+                        import java.util.Collection;
+                        import static java.util.stream.Collectors.toUnmodifiableList;
+                        import static java.util.stream.Collectors.toUnmodifiableMap;
+                        import static java.util.stream.Collectors.toUnmodifiableSet;
+                        class CollectorImports {
+                            void test(Collection<String> values) {
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                values.stream().collect(toUnmodifiableList());
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                values.stream().collect(toUnmodifiableSet());
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                values.stream().collect(toUnmodifiableMap(x -> x, x -> x));
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                values.stream().collect(toUnmodifiableMap(x -> x, x -> x, (a, b) -> a));
                             }
                         }
                         """)
@@ -120,6 +192,8 @@ public class TestPreferGuavaImmutableCollections
                                 ImmutableMap.of("a", "b");
                                 Collections.unmodifiableList(new ArrayList<>());
                                 Stream.of("a").toList();
+                                var nested = java.util.Optional.<List<String>>of(ImmutableList.of("a"));
+                                java.util.Optional<List<String>> result = nested;
                                 Stream.of("a").collect(Collectors.toList());
                                 Other.of();
                                 Other.copyOf();
@@ -244,6 +318,65 @@ public class TestPreferGuavaImmutableCollections
     }
 
     @Test
+    public void testGenericReceiverInferenceIsNotRewritten()
+    {
+        refactoringTestHelper()
+                .addInputLines("Test.java",
+                        """
+                        import java.util.ArrayList;
+                        import java.util.List;
+                        import java.util.Optional;
+                        import java.util.Set;
+                        import java.util.stream.Stream;
+                        class Test {
+                            void test(Stream<String> values, Stream<Set<String>> sets) {
+                                List<List<String>> mapped = values.map(value -> List.of(value)).toList();
+                                List<List<String>> copied = sets.map(List::copyOf).toList();
+                                List<String> optional = Optional.of(List.of("a")).orElseGet(ArrayList::new);
+                            }
+                        }
+                        """)
+                .expectUnchanged()
+                .doTest();
+    }
+
+    @Test
+    public void testGenericReceiverWithCompatibleTargetIsRewritten()
+    {
+        refactoringTestHelper()
+                .addInputLines("Test.java",
+                        """
+                        import java.util.List;
+                        import java.util.Optional;
+                        import java.util.stream.Collectors;
+                        import java.util.stream.Stream;
+                        class Test {
+                            void test() {
+                                List<List<String>> nested = Stream.of(List.of("a")).collect(Collectors.toList());
+                                List<List<String>> mapped = Stream.of("a").<List<String>>map(value -> List.of(value)).toList();
+                                List<String> optional = Optional.<List<String>>of(List.of("a")).orElseThrow();
+                            }
+                        }
+                        """)
+                .addOutputLines("Test.java",
+                        """
+                        import com.google.common.collect.ImmutableList;
+                        import java.util.List;
+                        import java.util.Optional;
+                        import java.util.stream.Collectors;
+                        import java.util.stream.Stream;
+                        class Test {
+                            void test() {
+                                List<List<String>> nested = Stream.of(ImmutableList.of("a")).collect(Collectors.toList());
+                                List<List<String>> mapped = Stream.of("a").<List<String>>map(value -> ImmutableList.of(value)).toList();
+                                List<String> optional = Optional.<List<String>>of(ImmutableList.of("a")).orElseThrow();
+                            }
+                        }
+                        """)
+                .doTest();
+    }
+
+    @Test
     public void testInferredGenericContainerIsNotRewritten()
     {
         refactoringTestHelper()
@@ -279,7 +412,6 @@ public class TestPreferGuavaImmutableCollections
                             Function<String[], List<String>> arrayFactory = List::of;
                             Collector<String, ?, List<String>> listCollector = Collectors.toUnmodifiableList();
                             void test(Collection<String> values, Map<String, String> map) {
-                                List.\\u006f\\u0066("a");
                                 Set.of("a", "a");
                                 Set.copyOf(values);
                                 Map.ofEntries(Map.entry("a", "b"));
@@ -290,7 +422,67 @@ public class TestPreferGuavaImmutableCollections
                         }
                         """)
                 .expectUnchanged()
-                .doTest(BugCheckerRefactoringTestHelper.TestMode.AST_MATCH);
+                .doTest();
+    }
+
+    @Test
+    public void testUnicodeEscapedMethodNameIsNotRewritten()
+    {
+        // Unicode escapes spell "of", with different source offsets and no google-java-format support.
+        compilationTestHelper()
+                .addSourceLines("Test.java",
+                        """
+                        import java.util.List;
+                        class Test {
+                            void test() {
+                                // BUG: Diagnostic contains: Prefer Guava immutable collections
+                                List.\\u006f\\u0066("a");
+                            }
+                        }
+                        """)
+                .doTest();
+        refactoringTestHelper()
+                .allowFormattingErrors()
+                .addInputLines("Test.java",
+                        """
+                        import java.util.List;
+                        class Test {
+                            void test() {
+                                List.\\u006f\\u0066("a");
+                            }
+                        }
+                        """)
+                .expectUnchanged()
+                .doTest();
+    }
+
+    @Test
+    @SuppressModernizer // Stream.toList() accepts nulls, so it cannot test this contract.
+    public void testListCollectorsRejectNullElements()
+    {
+        var jdkCollector = Collectors.<String>toUnmodifiableList();
+        assertThrows(NullPointerException.class, () -> Stream.of("a", null).collect(jdkCollector));
+        assertThrows(NullPointerException.class, () -> Stream.of("a", null).collect(toImmutableList()));
+    }
+
+    @Test
+    public void testSetCollectorsRejectNullElements()
+    {
+        assertThrows(NullPointerException.class, () -> Stream.of("a", null).collect(Collectors.toUnmodifiableSet()));
+        assertThrows(NullPointerException.class, () -> Stream.of("a", null).collect(toImmutableSet()));
+    }
+
+    @Test
+    public void testMapCollectorsRejectNullKeysAndValues()
+    {
+        assertThrows(NullPointerException.class, () -> Stream.of("a").collect(Collectors.toUnmodifiableMap(_ -> null, identity())));
+        assertThrows(NullPointerException.class, () -> Stream.of("a").collect(toImmutableMap(_ -> null, identity())));
+        assertThrows(NullPointerException.class, () -> Stream.of("a").collect(Collectors.toUnmodifiableMap(identity(), _ -> null)));
+        assertThrows(NullPointerException.class, () -> Stream.of("a").collect(toImmutableMap(identity(), _ -> null)));
+        assertThrows(NullPointerException.class, () -> Stream.of("a").collect(Collectors.toUnmodifiableMap(_ -> null, identity(), (first, _) -> first)));
+        assertThrows(NullPointerException.class, () -> Stream.of("a").collect(toImmutableMap(_ -> null, identity(), (first, _) -> first)));
+        assertThrows(NullPointerException.class, () -> Stream.of("a").collect(Collectors.toUnmodifiableMap(identity(), _ -> null, (first, _) -> first)));
+        assertThrows(NullPointerException.class, () -> Stream.of("a").collect(toImmutableMap(identity(), _ -> null, (first, _) -> first)));
     }
 
     private CompilationTestHelper compilationTestHelper()

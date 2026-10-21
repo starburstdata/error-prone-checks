@@ -84,7 +84,11 @@ public final class PreferGuavaImmutableCollections
         else {
             fix.replace(tree.getMethodSelect(), type + "." + method);
         }
-        return description.addFix(fix.build()).build();
+        SuggestedFix suggestedFix = fix.build();
+        if (!SuggestedFixes.compilesWithFix(suggestedFix, state)) {
+            return description.build();
+        }
+        return description.addFix(suggestedFix).build();
     }
 
     @Override
@@ -105,7 +109,11 @@ public final class PreferGuavaImmutableCollections
         SuggestedFix.Builder fix = SuggestedFix.builder();
         String type = SuggestedFixes.qualifyType(state, fix, target.type());
         fix.replace(tree.getQualifierExpression(), type);
-        return description.addFix(fix.build()).build();
+        SuggestedFix suggestedFix = fix.build();
+        if (!SuggestedFixes.compilesWithFix(suggestedFix, state)) {
+            return description.build();
+        }
+        return description.addFix(suggestedFix).build();
     }
 
     private static boolean isInferredVariableInitializer(VisitorState state)

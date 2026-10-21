@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     strategy:
       matrix:
         java-version:
@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up JDK
         uses: actions/setup-java@v6.1.0
         with:
@@ -38,8 +40,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release download 1.0.6 --repo apache/maven-mvnd --pattern maven-mvnd-1.0.6-linux-amd64.tar.gz --dir "$RUNNER_TEMP"
-          tar -xzf "$RUNNER_TEMP/maven-mvnd-1.0.6-linux-amd64.tar.gz" -C "$RUNNER_TEMP"
-          echo "$RUNNER_TEMP/maven-mvnd-1.0.6-linux-amd64/bin" >> "$GITHUB_PATH"
+          gh release download 1.0.6 --repo apache/maven-mvnd --pattern maven-mvnd-1.0.6-linux-aarch64.tar.gz --dir "$RUNNER_TEMP"
+          tar -xzf "$RUNNER_TEMP/maven-mvnd-1.0.6-linux-aarch64.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/maven-mvnd-1.0.6-linux-aarch64/bin" >> "$GITHUB_PATH"
       - name: Build and test
         run: mvnd verify -B -V -P ci

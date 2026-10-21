@@ -14,9 +14,7 @@ package io.trino.spi.deprecated;
 public class ClassWithDeprecatedMember
 {
     @Deprecated
-    public void deprecated()
-    {}
+    public void deprecated() {}
 
-    public void notDeprecated()
-    {}
+    public void notDeprecated() {}
 }

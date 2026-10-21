@@ -8,6 +8,9 @@ on:
       - '**/*.md'
   pull_request:
 
+permissions:
+  contents: read
+
 # Cancel previous PR builds.
 concurrency:
   # Cancel all workflow runs except latest within a concurrency group. This is achieved by defining a concurrency group for the PR.
@@ -17,28 +20,28 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     strategy:
       matrix:
         java-version:
-          - 21
+          - 25
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up JDK
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v6.1.0
         with:
           distribution: 'zulu'
           java-version: ${{ matrix.java-version }}
           cache: 'maven'
-      - name: Cache local Maven repository
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-mvn-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os}}-mvn-
-      - name: Maven install
-        run: ./mvnw install -T 1C -B -V -P ci -DskipTests
-      - name: Maven test
-        run: ./mvnw test -T 1C -B -P ci
+      - name: Set up mvnd
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download 1.0.6 --repo apache/maven-mvnd --pattern maven-mvnd-1.0.6-linux-aarch64.tar.gz --dir "$RUNNER_TEMP"
+          tar -xzf "$RUNNER_TEMP/maven-mvnd-1.0.6-linux-aarch64.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/maven-mvnd-1.0.6-linux-aarch64/bin" >> "$GITHUB_PATH"
+      - name: Build and test
+        run: mvnd verify -B -V -P ci

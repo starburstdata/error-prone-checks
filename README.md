@@ -8,8 +8,9 @@ extensions.
 
 * `DeprecatedApi` - Check for usages of `@Deprecated` APIs.
 * `TrinoExperimentalSpi` - Check for usages of Trino `@Experimental` SPIs.
+* `PreferGuavaImmutableCollections` - Prefer Guava immutable collections over JDK immutable factories and collectors.
 
-Both checkers can be fine-tuned with the following flags:
+The API usage checkers can be fine-tuned with the following flags:
 
 * `-XepOpt:<CheckerName>:BasePackages=io.trino.spi,...` - check for usage of APIs from these base
 * packages only.
@@ -29,7 +30,52 @@ To use the checkers configure your project to build with the Error Prone Java co
 `error-prone-checks` annotation processor.
 
 To customize that pass an additional compiler argument, e.g. `-Xep:TrinoExperimentalSpi:ERROR`.
-Allowed values are: `ERROR`, `WARNING`, `SUGGESTION`, `OFF`.
+Allowed values are: `ERROR`, `WARN`, `OFF`, `DEFAULT`.
+
+### Prefer Guava immutable collections
+
+Enable `-Xep:PreferGuavaImmutableCollections:ERROR` to reject `List.of/copyOf`,
+`Set.of/copyOf`, `Map.of/ofEntries/copyOf`, and `Collectors.toUnmodifiableList/Set/Map`.
+Resolved methods are checked, including static imports and method references. The checker
+encourages consistent collection implementations because copying between JDK and Guava
+immutable collections generally creates new storage. It does not track allocation provenance.
+
+Suggested fixes cover list factories, `List.copyOf` calls and method references, and
+`Collectors.toUnmodifiableList` calls directly passed to `Stream.collect`. Standalone
+collectors receive diagnostics without fixes because their declared generic result types
+may require `List` rather than `ImmutableList`. Array overloads use `ImmutableList.copyOf(array)`
+when the JDK factory expands the array; explicit array elements remain array elements.
+Each candidate fix is compiled before being offered; fixes that break generic inference
+receive diagnostics only. Calls inside inferred `var` initializers also receive no fix:
+`var nested = Optional.of(List.of("a"))` infers `Optional<List<String>>`, while replacing
+`List.of` with `ImmutableList.of` infers `Optional<ImmutableList<String>>`. These types are
+not assignable to each other. For a manual migration, an explicit type witness preserves
+the container's type:
+
+```java
+var nested = Optional.<List<String>>of(ImmutableList.of("a"));
+```
+
+JDK unmodifiable collectors and Guava immutable collectors reject null elements, keys,
+and values, but may throw at different stages of collection. Guava and JDK lists also
+differ in null query handling; review callers that depend on those behaviors.
+Set and map APIs receive diagnostics without automatic fixes because duplicate handling,
+iteration order, or merge semantics need review. Factory method references also receive
+no fix because their target types can change overload selection. `Stream.toList()` is outside
+this checker: unlike Guava immutable lists, it accepts null elements.
+
+Run Error Prone's [patch mode](https://errorprone.info/docs/patching) to apply supported fixes.
+Append these flags to the project's existing `-Xplugin:ErrorProne` compiler argument:
+
+```text
+-Xep:PreferGuavaImmutableCollections:WARN
+-XepPatchChecks:PreferGuavaImmutableCollections
+-XepPatchLocation:IN_PLACE
+```
+
+Only compiled sources receive fixes. Review the diff, run the project's formatter to remove
+unused imports, and compile the rewritten sources again.
+Use `@SuppressWarnings("PreferGuavaImmutableCollections")` for intentional exceptions.
 
 ### Maven
 
@@ -55,99 +101,48 @@ In `pom.xml`:
 
 # Development
 
+Requires JDK 25 and [mvnd](https://github.com/apache/maven-mvnd) 1.0.6 or newer.
+Run `mvnd verify -P ci` to build, test, and run the CI checks.
+
 The project uses the [Airbase Airlift](https://github.com/airlift/airbase/) framework, mostly to re-use useful Maven
 templates and patterns. This includes the `maven-gpg-plugin`, which is only enabled during the release by the profile
 `oss-release`.
 
 ## Release process
 
-The project is deployed to OSS Sonatype repository. The release process is manual, executed from the local development
-environment, and it uses the standard Maven Release Plugin.
+Releases are published to [Sonatype Central Portal](https://central.sonatype.org/publish/publish-portal-guide/)
+using Airbase's `oss-release` profile and Njord publishing extension.
 
 Prerequisites:
 
-* An account on [Sonatype Nexus Repository Manager](https://oss.sonatype.org/)
-* A GPG private key for signing the release artifacts
+* A Central Portal account with access to this project's namespace and a generated user token.
+* A GPG private key for signing release artifacts, with its public key available from a keyserver.
+* `mvnd` and JDK 25 or newer.
 
-### Sonatype account
-
-Once you have the Sonatype account, you need to configure Maven to use this account's credentials whe uploading
-artifacts. In your local `~/.m2/settings.xml` file add the following section:
+Configure the Central Portal token in your local `~/.m2/settings.xml`:
 
 ```xml
 <settings>
-    <!-- ... -->
     <servers>
-        <!-- Sonatype Maven Release Repository -->
         <server>
-            <id>ossrh</id>
-            <username><!-- your login here --></username>
-            <password><!-- your password here --></password>
+            <id>sonatype-central-portal</id>
+            <username><!-- token username --></username>
+            <password><!-- token password --></password>
         </server>
     </servers>
 </settings>
 ```
 
-This is a local file in you development environment, so these credentials are not published anywhere.
+Configure GPG according to the [Maven GPG Plugin documentation](https://maven.apache.org/plugins/maven-gpg-plugin/usage.html).
+Keep signing credentials outside the repository.
 
-### GPG private key
-
-You can use this [guide from Sonatype](https://central.sonatype.org/publish/requirements/gpg/) to help you set things
-up. Note that the signing key can be any key for which the public part is reachable from a keyserver
-(`keyserver.ubuntu.com` by default), even a personal one, or one created specifically for this purpose.
-
-For this to work, though, some more things need to be configured in local Maven.
-
-First, in case you have the `oss-release` profile already in `~/.m2/settings.xml`, you need to set the `gpg.skip`
-property to `false`:
-
-```xml
-<settings>
-    <!-- ... -->
-    <profiles>
-        <profile>
-            <!-- this profile name is defined by Airbase -->
-            <id>oss-release</id>
-            <properties>
-                <gpg.skip>false</gpg.skip>
-            </properties>
-        </profile>
-    </profiles>
-</settings>
-```
-
-Second, Maven needs to be able to read the password to the key during build. You can follow the instructions in the
-[plugin documentation](https://maven.apache.org/plugins/maven-gpg-plugin/usage.html).
-
-Yet another way, but not really secure (as it has the password in plain text in a local file), is to configure the
-password in the `~/.m2/settings.xml` file in the `oss-release` profile used by the release process in Airbase:
-
-```xml
-<settings>
-    <!-- ... -->
-    <profiles>
-        <profile>
-            <!-- this profile name is defined by Airbase -->
-            <id>oss-release</id>
-            <properties>
-                <gpg.passphrase><!-- your password to the private key here --></gpg.passphrase>
-            </properties>
-        </profile>
-    </profiles>
-</settings>
-```
-
-### Doing the release
-
-Once the above things are configured, this is basically a matter of executing the following commands:
+Prepare and publish the release:
 
 ```shell
-$ ./mvnw release:clean release:prepare
-$ ./mvnw release:perform
+mvnd release:clean release:prepare -P oss-release
+mvnd release:perform -P oss-release
 ```
 
-After they finish, you'll have two additional commits in you local git clone which switch over the project's version to
-a new one. Update [this readme](#maven) to mention the new version and create a pull request with these commits.
-
-The new release will end up in a staging repository in Sonatype and needs to be manually promoted. Log in to your
-account, and follow [these instructions from Sonatype](https://central.sonatype.org/publish/release/).
+The release profile signs artifacts and configures automatic Central Portal publishing.
+Review the release commits and tag before pushing them. Update the consumer version shown in
+[this README](#maven) after the release is available from Maven Central.

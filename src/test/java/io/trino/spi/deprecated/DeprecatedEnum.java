@@ -14,5 +14,5 @@ package io.trino.spi.deprecated;
 @Deprecated
 public enum DeprecatedEnum
 {
-    FOO,
+    FOO
 }

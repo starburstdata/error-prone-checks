@@ -16,6 +16,5 @@ import io.trino.spi.Experimental;
 @Experimental
 public class IgnoredExperimentalClass
 {
-    public void foo()
-    {}
+    public void foo() {}
 }

@@ -25,6 +25,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target({TYPE, FIELD, METHOD, CONSTRUCTOR})
-public @interface Experimental
-{
-}
+public @interface Experimental {}

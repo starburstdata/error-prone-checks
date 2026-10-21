@@ -14,16 +14,15 @@ import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.ErrorProneFlags;
 import com.google.errorprone.bugpatterns.BugChecker;
-
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @AutoService(BugChecker.class)
 @BugPattern(
         name = "DeprecatedApi",
         summary = "Do not use @Deprecated APIs.",
         explanation = """
-                APIs marked as @Deprecated should be avoided \
-                in libraries and shared components that other projects depend on.""",
+                      APIs marked as @Deprecated should be avoided \
+                      in libraries and shared components that other projects depend on.""",
         linkType = BugPattern.LinkType.NONE,
         severity = BugPattern.SeverityLevel.WARNING)
 public final class DeprecatedApiChecker
@@ -37,8 +36,7 @@ public final class DeprecatedApiChecker
     @Inject
     public DeprecatedApiChecker(ErrorProneFlags flags)
     {
-        super(
-                "java.lang.Deprecated",
+        super("java.lang.Deprecated",
                 flags.getSetOrEmpty("DeprecatedApi:BasePackages"),
                 flags.getSetOrEmpty("DeprecatedApi:IgnoredPackages"),
                 flags.getSetOrEmpty("DeprecatedApi:IgnoredTypes"));

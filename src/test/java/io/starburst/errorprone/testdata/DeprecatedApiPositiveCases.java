@@ -40,39 +40,33 @@ public class DeprecatedApiPositiveCases
     private final ClassWithDeprecatedMember classWithMember = new ClassWithDeprecatedMember();
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asParameter(DeprecatedClass param)
-    {}
+    public void asParameter(DeprecatedClass param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asParameter(DeprecatedEnum param)
-    {}
+    public void asParameter(DeprecatedEnum param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asParameter(DeprecatedRecord param)
-    {}
+    public void asParameter(DeprecatedRecord param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asTypeArgument(List<DeprecatedClass> param)
-    {}
+    public void asTypeArgument(List<DeprecatedClass> param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asTypeArgumentEnum(List<DeprecatedEnum> param)
-    {}
+    public void asTypeArgumentEnum(List<DeprecatedEnum> param) {}
 
     // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-    public void asTypeArgumentRecord(List<DeprecatedRecord> param)
-    {}
+    public void asTypeArgumentRecord(List<DeprecatedRecord> param) {}
 
     public void asLocalVariable()
     {
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        DeprecatedClass var;
+        DeprecatedClass _ = null;
 
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        DeprecatedEnum varEnum;
+        DeprecatedEnum _ = null;
 
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        DeprecatedRecord varRecord;
+        DeprecatedRecord _ = null;
     }
 
     public void methodCall()
@@ -102,26 +96,24 @@ public class DeprecatedApiPositiveCases
     public void referencingStaticMember()
     {
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        String ignore = DeprecatedClass.STATIC_MEMBER;
+        String _ = DeprecatedClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     public static class AsBaseClass
             // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-            extends DeprecatedClass
-    {}
+            extends DeprecatedClass {}
 
     public static class Overrides
             extends ClassWithDeprecatedMember
     {
         @Override
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        public void deprecated()
-        {}
+        public void deprecated() {}
     }
 }

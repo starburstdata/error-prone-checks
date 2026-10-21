@@ -40,39 +40,33 @@ public class TrinoExperimentalSpiNegativeCasesSuppressed
     private final ClassWithExperimentalMember classWithMember = new ClassWithExperimentalMember();
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asParameter(ExperimentalClass param)
-    {}
+    public void asParameter(ExperimentalClass param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asParameter(ExperimentalEnum param)
-    {}
+    public void asParameter(ExperimentalEnum param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asParameter(ExperimentalRecord param)
-    {}
+    public void asParameter(ExperimentalRecord param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asTypeArgument(List<ExperimentalClass> param)
-    {}
+    public void asTypeArgument(List<ExperimentalClass> param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asTypeArgumentEnum(List<ExperimentalEnum> param)
-    {}
+    public void asTypeArgumentEnum(List<ExperimentalEnum> param) {}
 
     @SuppressWarnings("TrinoExperimentalSpi")
-    public void asTypeArgumentRecord(List<ExperimentalRecord> param)
-    {}
+    public void asTypeArgumentRecord(List<ExperimentalRecord> param) {}
 
     public void asLocalVariable()
     {
         @SuppressWarnings("TrinoExperimentalSpi")
-        ExperimentalClass var;
+        ExperimentalClass _ = null;
 
         @SuppressWarnings("TrinoExperimentalSpi")
-        ExperimentalEnum varEnum;
+        ExperimentalEnum _ = null;
 
         @SuppressWarnings("TrinoExperimentalSpi")
-        ExperimentalRecord varRecord;
+        ExperimentalRecord _ = null;
     }
 
     @SuppressWarnings("TrinoExperimentalSpi")
@@ -102,26 +96,24 @@ public class TrinoExperimentalSpiNegativeCasesSuppressed
     public void referencingStaticMember()
     {
         @SuppressWarnings("TrinoExperimentalSpi")
-        String ignore = ExperimentalClass.STATIC_MEMBER;
+        String _ = ExperimentalClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
         @SuppressWarnings("TrinoExperimentalSpi")
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     @SuppressWarnings("TrinoExperimentalSpi")
     public static class AsBaseClass
-            extends ExperimentalClass
-    {}
+            extends ExperimentalClass {}
 
     public static class Overrides
             extends ClassWithExperimentalMember
     {
         @SuppressWarnings("TrinoExperimentalSpi")
         @Override
-        public void experimental()
-        {}
+        public void experimental() {}
     }
 }

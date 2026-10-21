@@ -16,5 +16,5 @@ import io.trino.spi.Experimental;
 @Experimental
 public enum ExperimentalEnum
 {
-    FOO,
+    FOO
 }

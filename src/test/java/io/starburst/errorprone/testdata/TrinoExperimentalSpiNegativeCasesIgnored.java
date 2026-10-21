@@ -32,7 +32,7 @@ public class TrinoExperimentalSpiNegativeCasesIgnored
 
     public void asLocalVariable()
     {
-        ExperimentalClass var;
+        ExperimentalClass _ = null;
     }
 
     public void methodCall()
@@ -47,12 +47,12 @@ public class TrinoExperimentalSpiNegativeCasesIgnored
 
     public void referencingStaticMember()
     {
-        String ignore = ExperimentalClass.STATIC_MEMBER;
+        String _ = ExperimentalClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     public static class AsBaseClass

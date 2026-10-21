@@ -60,13 +60,13 @@ public class DeprecatedApiNegativeCasesSuppressed
     public void asLocalVariable()
     {
         @SuppressWarnings("DeprecatedApi")
-        DeprecatedClass var;
+        DeprecatedClass _ = null;
 
         @SuppressWarnings("DeprecatedApi")
-        DeprecatedEnum varEnum;
+        DeprecatedEnum _ = null;
 
         @SuppressWarnings("DeprecatedApi")
-        DeprecatedRecord varRecord;
+        DeprecatedRecord _ = null;
     }
 
     @SuppressWarnings("DeprecatedApi")
@@ -84,13 +84,13 @@ public class DeprecatedApiNegativeCasesSuppressed
     public void referencingStaticMember()
     {
         @SuppressWarnings("DeprecatedApi")
-        String ignore = DeprecatedClass.STATIC_MEMBER;
+        String _ = DeprecatedClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
         @SuppressWarnings("DeprecatedApi")
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     @SuppressWarnings("DeprecatedApi")

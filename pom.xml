@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>206</version>
+        <version>419</version>
     </parent>
 
     <groupId>io.starburst.errorprone</groupId>
@@ -41,20 +41,15 @@
     <properties>
         <air.license.header-file>${air.main.basedir}/.mvn/license/starburst-header.txt</air.license.header-file>
         <air.check.skip-pmd>true</air.check.skip-pmd>
+        <air.java.version>25</air.java.version>
 
-        <project.build.targetJdk>21</project.build.targetJdk>
+        <project.build.targetJdk>25</project.build.targetJdk>
 
         <dep.auto-service.version>1.1.1</dep.auto-service.version>
-        <dep.compile-testing.version>0.21.0</dep.compile-testing.version>
+        <dep.compile-testing.version>0.24.0</dep.compile-testing.version>
 
         <air.release.preparation-goals>clean verify -DskipTests</air.release.preparation-goals>
 
-        <air.repository.snapshot.id>ossrh</air.repository.snapshot.id>
-        <air.repository.snapshot.name>Sonatype Snapshots</air.repository.snapshot.name>
-        <air.repository.snapshot.url>https://oss.sonatype.org/content/repositories/snapshots</air.repository.snapshot.url>
-        <air.repository.release.id>ossrh</air.repository.release.id>
-        <air.repository.release.name>Sonatype Releases</air.repository.release.name>
-        <air.repository.release.url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</air.repository.release.url>
     </properties>
 
     <dependencies>
@@ -67,12 +62,6 @@
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_annotation</artifactId>
             <version>${dep.errorprone.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.checkerframework</groupId>
-                    <artifactId>checker-qual</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.errorprone</groupId>
@@ -88,17 +77,11 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.checkerframework</groupId>
-                    <artifactId>checker-qual</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <version>2.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.errorprone</groupId>
@@ -112,10 +95,6 @@
             <version>${dep.errorprone.version}</version>
             <scope>test</scope>
             <exclusions>
-                <exclusion>
-                    <groupId>com.google.auto.value</groupId>
-                    <artifactId>auto-value</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>com.google.truth</groupId>
                     <artifactId>truth</artifactId>
@@ -131,16 +110,15 @@
             <artifactId>compile-testing</artifactId>
             <version>${dep.compile-testing.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.checkerframework</groupId>
-                    <artifactId>checker-qual</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -235,7 +213,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.4.1</version>
                     <configuration>
                         <show>public</show>
                         <failOnError>false</failOnError>

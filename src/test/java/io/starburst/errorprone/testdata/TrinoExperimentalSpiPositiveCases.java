@@ -60,13 +60,13 @@ public class TrinoExperimentalSpiPositiveCases
     public void asLocalVariable()
     {
         // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-        ExperimentalClass var;
+        ExperimentalClass _ = null;
 
         // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-        ExperimentalEnum varEnum;
+        ExperimentalEnum _ = null;
 
         // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-        ExperimentalRecord varRecord;
+        ExperimentalRecord _ = null;
     }
 
     public void methodCall()
@@ -96,13 +96,13 @@ public class TrinoExperimentalSpiPositiveCases
     public void referencingStaticMember()
     {
         // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-        String ignore = ExperimentalClass.STATIC_MEMBER;
+        String _ = ExperimentalClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
         // BUG: Diagnostic contains: Do not use Trino @Experimental SPIs.
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     public static class AsBaseClass

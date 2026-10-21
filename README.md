@@ -8,8 +8,9 @@ extensions.
 
 * `DeprecatedApi` - Check for usages of `@Deprecated` APIs.
 * `TrinoExperimentalSpi` - Check for usages of Trino `@Experimental` SPIs.
+* `PreferGuavaImmutableCollections` - Prefer Guava immutable collections over JDK immutable factories and collectors.
 
-Both checkers can be fine-tuned with the following flags:
+The API usage checkers can be fine-tuned with the following flags:
 
 * `-XepOpt:<CheckerName>:BasePackages=io.trino.spi,...` - check for usage of APIs from these base
 * packages only.
@@ -29,7 +30,52 @@ To use the checkers configure your project to build with the Error Prone Java co
 `error-prone-checks` annotation processor.
 
 To customize that pass an additional compiler argument, e.g. `-Xep:TrinoExperimentalSpi:ERROR`.
-Allowed values are: `ERROR`, `WARNING`, `SUGGESTION`, `OFF`.
+Allowed values are: `ERROR`, `WARN`, `OFF`, `DEFAULT`.
+
+### Prefer Guava immutable collections
+
+Enable `-Xep:PreferGuavaImmutableCollections:ERROR` to reject `List.of/copyOf`,
+`Set.of/copyOf`, `Map.of/ofEntries/copyOf`, and `Collectors.toUnmodifiableList/Set/Map`.
+Resolved methods are checked, including static imports and method references. The checker
+encourages consistent collection implementations because copying between JDK and Guava
+immutable collections generally creates new storage. It does not track allocation provenance.
+
+Suggested fixes cover list factories, `List.copyOf` calls and method references, and
+`Collectors.toUnmodifiableList` calls directly passed to `Stream.collect`. Standalone
+collectors receive diagnostics without fixes because their declared generic result types
+may require `List` rather than `ImmutableList`. Array overloads use `ImmutableList.copyOf(array)`
+when the JDK factory expands the array; explicit array elements remain array elements.
+Each candidate fix is compiled before being offered; fixes that break generic inference
+receive diagnostics only. Calls inside inferred `var` initializers also receive no fix:
+`var nested = Optional.of(List.of("a"))` infers `Optional<List<String>>`, while replacing
+`List.of` with `ImmutableList.of` infers `Optional<ImmutableList<String>>`. These types are
+not assignable to each other. For a manual migration, an explicit type witness preserves
+the container's type:
+
+```java
+var nested = Optional.<List<String>>of(ImmutableList.of("a"));
+```
+
+JDK unmodifiable collectors and Guava immutable collectors reject null elements, keys,
+and values, but may throw at different stages of collection. Guava and JDK lists also
+differ in null query handling; review callers that depend on those behaviors.
+Set and map APIs receive diagnostics without automatic fixes because duplicate handling,
+iteration order, or merge semantics need review. Factory method references also receive
+no fix because their target types can change overload selection. `Stream.toList()` is outside
+this checker: unlike Guava immutable lists, it accepts null elements.
+
+Run Error Prone's [patch mode](https://errorprone.info/docs/patching) to apply supported fixes.
+Append these flags to the project's existing `-Xplugin:ErrorProne` compiler argument:
+
+```text
+-Xep:PreferGuavaImmutableCollections:WARN
+-XepPatchChecks:PreferGuavaImmutableCollections
+-XepPatchLocation:IN_PLACE
+```
+
+Only compiled sources receive fixes. Review the diff, run the project's formatter to remove
+unused imports, and compile the rewritten sources again.
+Use `@SuppressWarnings("PreferGuavaImmutableCollections")` for intentional exceptions.
 
 ### Maven
 

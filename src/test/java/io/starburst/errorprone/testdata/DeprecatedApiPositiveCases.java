@@ -60,13 +60,13 @@ public class DeprecatedApiPositiveCases
     public void asLocalVariable()
     {
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        DeprecatedClass var;
+        DeprecatedClass _ = null;
 
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        DeprecatedEnum varEnum;
+        DeprecatedEnum _ = null;
 
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        DeprecatedRecord varRecord;
+        DeprecatedRecord _ = null;
     }
 
     public void methodCall()
@@ -96,13 +96,13 @@ public class DeprecatedApiPositiveCases
     public void referencingStaticMember()
     {
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        String ignore = DeprecatedClass.STATIC_MEMBER;
+        String _ = DeprecatedClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
         // BUG: Diagnostic contains: Do not use @Deprecated APIs.
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     public static class AsBaseClass

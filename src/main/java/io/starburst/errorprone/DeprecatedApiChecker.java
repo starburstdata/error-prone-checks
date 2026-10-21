@@ -14,8 +14,7 @@ import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.ErrorProneFlags;
 import com.google.errorprone.bugpatterns.BugChecker;
-
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @AutoService(BugChecker.class)
 @BugPattern(

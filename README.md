@@ -55,99 +55,48 @@ In `pom.xml`:
 
 # Development
 
+Requires JDK 25 and [mvnd](https://github.com/apache/maven-mvnd) 1.0.6 or newer.
+Run `mvnd verify -P ci` to build, test, and run the CI checks.
+
 The project uses the [Airbase Airlift](https://github.com/airlift/airbase/) framework, mostly to re-use useful Maven
 templates and patterns. This includes the `maven-gpg-plugin`, which is only enabled during the release by the profile
 `oss-release`.
 
 ## Release process
 
-The project is deployed to OSS Sonatype repository. The release process is manual, executed from the local development
-environment, and it uses the standard Maven Release Plugin.
+Releases are published to [Sonatype Central Portal](https://central.sonatype.org/publish/publish-portal-guide/)
+using Airbase's `oss-release` profile and Njord publishing extension.
 
 Prerequisites:
 
-* An account on [Sonatype Nexus Repository Manager](https://oss.sonatype.org/)
-* A GPG private key for signing the release artifacts
+* A Central Portal account with access to this project's namespace and a generated user token.
+* A GPG private key for signing release artifacts, with its public key available from a keyserver.
+* `mvnd` and JDK 25 or newer.
 
-### Sonatype account
-
-Once you have the Sonatype account, you need to configure Maven to use this account's credentials whe uploading
-artifacts. In your local `~/.m2/settings.xml` file add the following section:
+Configure the Central Portal token in your local `~/.m2/settings.xml`:
 
 ```xml
 <settings>
-    <!-- ... -->
     <servers>
-        <!-- Sonatype Maven Release Repository -->
         <server>
-            <id>ossrh</id>
-            <username><!-- your login here --></username>
-            <password><!-- your password here --></password>
+            <id>sonatype-central-portal</id>
+            <username><!-- token username --></username>
+            <password><!-- token password --></password>
         </server>
     </servers>
 </settings>
 ```
 
-This is a local file in you development environment, so these credentials are not published anywhere.
+Configure GPG according to the [Maven GPG Plugin documentation](https://maven.apache.org/plugins/maven-gpg-plugin/usage.html).
+Keep signing credentials outside the repository.
 
-### GPG private key
-
-You can use this [guide from Sonatype](https://central.sonatype.org/publish/requirements/gpg/) to help you set things
-up. Note that the signing key can be any key for which the public part is reachable from a keyserver
-(`keyserver.ubuntu.com` by default), even a personal one, or one created specifically for this purpose.
-
-For this to work, though, some more things need to be configured in local Maven.
-
-First, in case you have the `oss-release` profile already in `~/.m2/settings.xml`, you need to set the `gpg.skip`
-property to `false`:
-
-```xml
-<settings>
-    <!-- ... -->
-    <profiles>
-        <profile>
-            <!-- this profile name is defined by Airbase -->
-            <id>oss-release</id>
-            <properties>
-                <gpg.skip>false</gpg.skip>
-            </properties>
-        </profile>
-    </profiles>
-</settings>
-```
-
-Second, Maven needs to be able to read the password to the key during build. You can follow the instructions in the
-[plugin documentation](https://maven.apache.org/plugins/maven-gpg-plugin/usage.html).
-
-Yet another way, but not really secure (as it has the password in plain text in a local file), is to configure the
-password in the `~/.m2/settings.xml` file in the `oss-release` profile used by the release process in Airbase:
-
-```xml
-<settings>
-    <!-- ... -->
-    <profiles>
-        <profile>
-            <!-- this profile name is defined by Airbase -->
-            <id>oss-release</id>
-            <properties>
-                <gpg.passphrase><!-- your password to the private key here --></gpg.passphrase>
-            </properties>
-        </profile>
-    </profiles>
-</settings>
-```
-
-### Doing the release
-
-Once the above things are configured, this is basically a matter of executing the following commands:
+Prepare and publish the release:
 
 ```shell
-$ ./mvnw release:clean release:prepare
-$ ./mvnw release:perform
+mvnd release:clean release:prepare -P oss-release
+mvnd release:perform -P oss-release
 ```
 
-After they finish, you'll have two additional commits in you local git clone which switch over the project's version to
-a new one. Update [this readme](#maven) to mention the new version and create a pull request with these commits.
-
-The new release will end up in a staging repository in Sonatype and needs to be manually promoted. Log in to your
-account, and follow [these instructions from Sonatype](https://central.sonatype.org/publish/release/).
+The release profile signs artifacts and configures automatic Central Portal publishing.
+Review the release commits and tag before pushing them. Update the consumer version shown in
+[this README](#maven) after the release is available from Maven Central.

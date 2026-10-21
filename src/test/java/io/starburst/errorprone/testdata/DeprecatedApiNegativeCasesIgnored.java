@@ -32,7 +32,7 @@ public class DeprecatedApiNegativeCasesIgnored
 
     public void asLocalVariable()
     {
-        DeprecatedClass var;
+        DeprecatedClass _ = null;
     }
 
     public void methodCall()
@@ -47,12 +47,12 @@ public class DeprecatedApiNegativeCasesIgnored
 
     public void referencingStaticMember()
     {
-        String ignore = DeprecatedClass.STATIC_MEMBER;
+        String _ = DeprecatedClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     public static class AsBaseClass

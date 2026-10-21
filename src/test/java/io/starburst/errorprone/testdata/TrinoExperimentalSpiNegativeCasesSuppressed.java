@@ -60,13 +60,13 @@ public class TrinoExperimentalSpiNegativeCasesSuppressed
     public void asLocalVariable()
     {
         @SuppressWarnings("TrinoExperimentalSpi")
-        ExperimentalClass var;
+        ExperimentalClass _ = null;
 
         @SuppressWarnings("TrinoExperimentalSpi")
-        ExperimentalEnum varEnum;
+        ExperimentalEnum _ = null;
 
         @SuppressWarnings("TrinoExperimentalSpi")
-        ExperimentalRecord varRecord;
+        ExperimentalRecord _ = null;
     }
 
     @SuppressWarnings("TrinoExperimentalSpi")
@@ -96,13 +96,13 @@ public class TrinoExperimentalSpiNegativeCasesSuppressed
     public void referencingStaticMember()
     {
         @SuppressWarnings("TrinoExperimentalSpi")
-        String ignore = ExperimentalClass.STATIC_MEMBER;
+        String _ = ExperimentalClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
         @SuppressWarnings("TrinoExperimentalSpi")
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     @SuppressWarnings("TrinoExperimentalSpi")

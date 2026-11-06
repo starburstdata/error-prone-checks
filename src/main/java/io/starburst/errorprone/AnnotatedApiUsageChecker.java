@@ -55,7 +55,10 @@ import static javax.lang.model.element.ElementKind.METHOD;
  */
 public abstract class AnnotatedApiUsageChecker
         extends BugChecker
-        implements IdentifierTreeMatcher, MemberReferenceTreeMatcher, MemberSelectTreeMatcher, MethodTreeMatcher
+        implements IdentifierTreeMatcher,
+                   MemberReferenceTreeMatcher,
+                   MemberSelectTreeMatcher,
+                   MethodTreeMatcher
 {
     /**
      * Kinds of elements that should be considered annotated if the element's owner (i.e. the class

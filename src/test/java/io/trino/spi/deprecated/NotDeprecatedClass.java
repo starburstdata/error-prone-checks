@@ -15,6 +15,5 @@ public class NotDeprecatedClass
 {
     public static final String STATIC_MEMBER = "dummy";
 
-    public void foo()
-    {}
+    public void foo() {}
 }

@@ -14,6 +14,5 @@ package io.trino.spi.ignored;
 @Deprecated
 public class IgnoredDeprecatedClass
 {
-    public void foo()
-    {}
+    public void foo() {}
 }

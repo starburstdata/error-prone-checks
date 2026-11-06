@@ -14,6 +14,4 @@ import io.trino.spi.Experimental;
 
 @SuppressWarnings("unused")
 @Experimental
-public record ExperimentalRecord(String foo)
-{
-}
+public record ExperimentalRecord(String foo) {}

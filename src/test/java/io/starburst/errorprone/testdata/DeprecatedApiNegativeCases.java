@@ -26,15 +26,13 @@ public class DeprecatedApiNegativeCases
 
     private final ClassWithDeprecatedMember classWithMember = new ClassWithDeprecatedMember();
 
-    public void asParameter(NotDeprecatedClass param)
-    {}
+    public void asParameter(NotDeprecatedClass param) {}
 
-    public void asTypeParameter(List<NotDeprecatedClass> param)
-    {}
+    public void asTypeParameter(List<NotDeprecatedClass> param) {}
 
     public void asLocalVariable()
     {
-        NotDeprecatedClass var;
+        NotDeprecatedClass _ = null;
     }
 
     public void methodCall()
@@ -49,24 +47,22 @@ public class DeprecatedApiNegativeCases
 
     public void referencingStaticMember()
     {
-        String ignore = NotDeprecatedClass.STATIC_MEMBER;
+        String _ = NotDeprecatedClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     public static class AsBaseClass
-            extends NotDeprecatedClass
-    {}
+            extends NotDeprecatedClass {}
 
     public static class Overrides
             extends ClassWithDeprecatedMember
     {
         @SuppressWarnings("RedundantMethodOverride")
         @Override
-        public void notDeprecated()
-        {}
+        public void notDeprecated() {}
     }
 }

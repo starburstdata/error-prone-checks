@@ -40,39 +40,33 @@ public class DeprecatedApiNegativeCasesSuppressed
     private final ClassWithDeprecatedMember classWithMember = new ClassWithDeprecatedMember();
 
     @SuppressWarnings("DeprecatedApi")
-    public void asParameter(DeprecatedClass param)
-    {}
+    public void asParameter(DeprecatedClass param) {}
 
     @SuppressWarnings("DeprecatedApi")
-    public void asParameter(DeprecatedEnum param)
-    {}
+    public void asParameter(DeprecatedEnum param) {}
 
     @SuppressWarnings("DeprecatedApi")
-    public void asParameter(DeprecatedRecord param)
-    {}
+    public void asParameter(DeprecatedRecord param) {}
 
     @SuppressWarnings("DeprecatedApi")
-    public void asTypeArgument(List<DeprecatedClass> param)
-    {}
+    public void asTypeArgument(List<DeprecatedClass> param) {}
 
     @SuppressWarnings("DeprecatedApi")
-    public void asTypeArgumentEnum(List<DeprecatedEnum> param)
-    {}
+    public void asTypeArgumentEnum(List<DeprecatedEnum> param) {}
 
     @SuppressWarnings("DeprecatedApi")
-    public void asTypeArgumentRecord(List<DeprecatedRecord> param)
-    {}
+    public void asTypeArgumentRecord(List<DeprecatedRecord> param) {}
 
     public void asLocalVariable()
     {
         @SuppressWarnings("DeprecatedApi")
-        DeprecatedClass var;
+        DeprecatedClass _ = null;
 
         @SuppressWarnings("DeprecatedApi")
-        DeprecatedEnum varEnum;
+        DeprecatedEnum _ = null;
 
         @SuppressWarnings("DeprecatedApi")
-        DeprecatedRecord varRecord;
+        DeprecatedRecord _ = null;
     }
 
     @SuppressWarnings("DeprecatedApi")
@@ -90,13 +84,13 @@ public class DeprecatedApiNegativeCasesSuppressed
     public void referencingStaticMember()
     {
         @SuppressWarnings("DeprecatedApi")
-        String ignore = DeprecatedClass.STATIC_MEMBER;
+        String _ = DeprecatedClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
         @SuppressWarnings("DeprecatedApi")
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     @SuppressWarnings("DeprecatedApi")
@@ -113,15 +107,13 @@ public class DeprecatedApiNegativeCasesSuppressed
 
     @SuppressWarnings("DeprecatedApi")
     public static class AsBaseClass
-            extends DeprecatedClass
-    {}
+            extends DeprecatedClass {}
 
     public static class Overrides
             extends ClassWithDeprecatedMember
     {
         @SuppressWarnings("DeprecatedApi")
         @Override
-        public void deprecated()
-        {}
+        public void deprecated() {}
     }
 }

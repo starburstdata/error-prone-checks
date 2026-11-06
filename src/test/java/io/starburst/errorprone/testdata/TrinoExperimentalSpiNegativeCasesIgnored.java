@@ -26,15 +26,13 @@ public class TrinoExperimentalSpiNegativeCasesIgnored
 
     private final ClassWithExperimentalMember classWithMember = new ClassWithExperimentalMember();
 
-    public void asParameter(ExperimentalClass param)
-    {}
+    public void asParameter(ExperimentalClass param) {}
 
-    public void asTypeArgument(List<ExperimentalClass> param)
-    {}
+    public void asTypeArgument(List<ExperimentalClass> param) {}
 
     public void asLocalVariable()
     {
-        ExperimentalClass var;
+        ExperimentalClass _ = null;
     }
 
     public void methodCall()
@@ -49,23 +47,21 @@ public class TrinoExperimentalSpiNegativeCasesIgnored
 
     public void referencingStaticMember()
     {
-        String ignore = ExperimentalClass.STATIC_MEMBER;
+        String _ = ExperimentalClass.STATIC_MEMBER;
     }
 
     public void referencingStaticMemberAsStaticImport()
     {
-        String ignore = STATIC_MEMBER;
+        String _ = STATIC_MEMBER;
     }
 
     public static class AsBaseClass
-            extends ExperimentalClass
-    {}
+            extends ExperimentalClass {}
 
     public static class Overrides
             extends ClassWithExperimentalMember
     {
         @Override
-        public void experimental()
-        {}
+        public void experimental() {}
     }
 }

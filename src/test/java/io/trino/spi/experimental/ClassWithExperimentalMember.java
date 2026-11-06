@@ -15,9 +15,7 @@ import io.trino.spi.Experimental;
 public class ClassWithExperimentalMember
 {
     @Experimental
-    public void experimental()
-    {}
+    public void experimental() {}
 
-    public void notExperimental()
-    {}
+    public void notExperimental() {}
 }
